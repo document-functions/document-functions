@@ -8,6 +8,10 @@ import { AngularMaterialModule } from '../angular-material/angular-material.modu
 
 @NgModule({
   declarations: [MainComponent, TableCompareComponent, TableArchiveComponent],
-  imports: [CommonModule, TableCheckerRoutingModule, AngularMaterialModule],
+  imports: [
+    CommonModule,
+    TableCheckerRoutingModule,
+    AngularMaterialModule,
+  ],
 })
 export class TableCheckerModule {}

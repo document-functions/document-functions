@@ -1,1 +1,35 @@
-<p>table-compare works!</p>
+<div class="main-card">
+  <input #triggerFileInput type="file" (change)="uploadXlsx($event)" class="hidden" />
+  <button class="mb-5" mat-flat-button color="primary" type="button" (click)="triggerFileInput.click()">
+    <mat-icon>note_add</mat-icon>
+    Upload xlsx file
+  </button>
+
+  <ng-container *ngIf="getTables$ | async as tables">
+    <mat-accordion multi>
+      <mat-expansion-panel *ngFor="let table of tables">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            {{ table.fileName }}
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+
+        <div class="border-t border-mercury">
+          <mat-tab-group mat-stretch-tabs="false" class="sheet-tab">
+            <mat-tab *ngFor="let sheet of table.fileSheets" [label]="sheet">
+              <table mat-table [dataSource]="table.fileData[sheet]">
+                <ng-container *ngFor="let column of table.columns[sheet]" [matColumnDef]="column">
+                  <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+                  <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="table.columns[sheet]"></tr>
+                <tr mat-row *matRowDef="let row; columns: table.columns[sheet];"></tr>
+              </table>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-container>
+</div>

@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+// theme
 @import './components/mat-theme/mat-theme';
+
+// mixins
+@import './components/mixins/custom-scroll';
+
+// components
 @import './components/layout';
 @import './components/mat-secondary-links';
+@import './components/main-card';
+@import './components/mat-accordion';
+@import './components/mat-sheet-tab';

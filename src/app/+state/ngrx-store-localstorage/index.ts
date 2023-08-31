@@ -1,25 +1,19 @@
 import * as deepmerge from 'deepmerge';
-
 import { get, set } from 'lodash';
 
 interface Keys {
   state: string;
-
   slices: string[];
-
   isFeature?: boolean;
 }
 
 export interface LocalStorageConfig {
   keys: Keys[];
-
   storage: Storage;
 }
 
 const INIT_ACTION = '@ngrx/store/init';
-
 const UPDATE_ACTION = '@ngrx/store/update-reducers';
-
 const RECOMPUTE_ACTION = '@ngrx/store-devtools/recompute';
 
 const rehydrateSate = (keys: Keys[], storage: any, recompute = false) => {
@@ -43,11 +37,8 @@ const rehydrateSate = (keys: Keys[], storage: any, recompute = false) => {
 export const localStorageSync =
   (config: LocalStorageConfig) => (reducer: any) => {
     const storage = config.storage;
-
     const keys = config.keys;
-
     let persistedState: any = rehydrateSate(keys, storage);
-
     let recompute = false;
 
     return function (state: any, action: any) {
@@ -73,12 +64,9 @@ export const localStorageSync =
       ) {
         const overwriteMerge = (
           destinationArray: any,
-
           sourceArray: any,
-
           options: any
         ) => sourceArray;
-
         const options: deepmerge.Options = {
           arrayMerge: overwriteMerge,
         };

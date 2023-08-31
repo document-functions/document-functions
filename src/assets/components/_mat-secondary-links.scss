@@ -4,7 +4,8 @@
     min-width: 200px;
     border-top-right-radius: 8px;
     border-top-left-radius: 8px;
-    background-color: theme('colors.orientals');
+    height: 40px;
+    background-color: theme('colors.teal');
     &:not(:last-of-type) {
       margin-right: 8px;
     }

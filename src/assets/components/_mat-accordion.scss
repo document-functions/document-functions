@@ -1,0 +1,14 @@
+.mat-accordion {
+  .mat-expansion-panel {
+    margin-bottom: 20px;
+    border-radius: 6px;
+    &-header {
+      height: 40px;
+    }
+  }
+  .mat-expansion-indicator{
+    &::after {
+      border-color: theme('colors.dove');
+    }
+  }
+}
