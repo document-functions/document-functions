@@ -1,0 +1,24 @@
+@use '@angular/material' as mat;
+@import './mat-palette';
+@include mat.core();
+
+$mat-theme-primary: mat.define-palette($mat-palette);
+$mat-theme-accent: mat.define-palette($mat-palette, 400, 500, 600);
+$mat-theme-warn: mat.define-palette($mat-palette-red);
+$custom-typography: mat.define-typography-config(
+  $font-family: "Roboto, 'Helvetica Neue', sans-serif",
+);
+
+$mat-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $mat-theme-primary,
+      accent: $mat-theme-accent,
+      warn: $mat-theme-warn,
+    ),
+    typography: $custom-typography,
+  )
+);
+
+@include mat.core-theme($mat-theme);
+@include mat.button-theme($mat-theme);
