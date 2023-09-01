@@ -1,35 +1,63 @@
-<div class="main-card">
-  <input #triggerFileInput type="file" (change)="uploadXlsx($event)" class="hidden" />
-  <button class="mb-5" mat-flat-button color="primary" type="button" (click)="triggerFileInput.click()">
+<div class="main-card relative">
+  <input
+    #triggerFileInput
+    type="file"
+    (change)="uploadXlsx($event)"
+    class="hidden"
+  />
+  <button
+    class="h-8 absolute rounded-b-none"
+    mat-flat-button
+    color="primary"
+    type="button"
+    (click)="triggerFileInput.click()"
+  >
     <mat-icon>note_add</mat-icon>
     Upload xlsx file
   </button>
 
   <ng-container *ngIf="getTables$ | async as tables">
-    <mat-accordion multi>
-      <mat-expansion-panel *ngFor="let table of tables">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            {{ table.fileName }}
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-
-        <div class="border-t border-mercury">
-          <mat-tab-group mat-stretch-tabs="false" class="sheet-tab">
-            <mat-tab *ngFor="let sheet of table.fileSheets" [label]="sheet">
-              <table mat-table [dataSource]="table.fileData[sheet]">
-                <ng-container *ngFor="let column of table.columns[sheet]" [matColumnDef]="column">
+    <mat-tab-group
+      mat-stretch-tabs="false"
+      animationDuration="0ms"
+      class="excel-tab"
+    >
+      <mat-tab *ngFor="let table of tables" [label]="table.fileName">
+        <mat-tab-group mat-stretch-tabs="false" class="sheet-tab">
+          <mat-tab *ngFor="let sheet of table.fileSheets" [label]="sheet">
+            <cdk-virtual-scroll-viewport
+              tvsItemSize="48"
+              headerHeight="20"
+              class="h-96"
+            >
+              <table
+                class="primary-table"
+                mat-table
+                [dataSource]="table.fileData[sheet]"
+              >
+                <ng-container
+                  *ngFor="let column of table.columns[sheet]"
+                  [matColumnDef]="column"
+                >
                   <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
-                  <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element[column] }}
+                  </td>
                 </ng-container>
 
-                <tr mat-header-row *matHeaderRowDef="table.columns[sheet]"></tr>
-                <tr mat-row *matRowDef="let row; columns: table.columns[sheet];"></tr>
+                <tr
+                  mat-header-row
+                  *matHeaderRowDef="table.columns[sheet]; sticky: true"
+                ></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let row; columns: table.columns[sheet]"
+                ></tr>
               </table>
-            </mat-tab>
-          </mat-tab-group>
-        </div>
-      </mat-expansion-panel>
-    </mat-accordion>
+            </cdk-virtual-scroll-viewport>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-tab>
+    </mat-tab-group>
   </ng-container>
 </div>

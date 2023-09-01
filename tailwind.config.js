@@ -9,6 +9,8 @@ module.exports = {
         mercury: '#ebebeb',
         teal: '#ababab',
         dove: '#6c6c6c',
+        felt: '#1f7246',
+        grand: '#85be9f',
       }
     },
   },

@@ -1,0 +1,30 @@
+.excel-tab {
+  > .mat-mdc-tab-header {
+    padding-left: 180px;
+    .mdc-tab {
+      min-width: 100px;
+      border-top-right-radius: 6px;
+      border-top-left-radius: 6px;
+      height: 32px !important;
+      font-size: 14px;
+      background-color: theme('colors.grand');
+      &:not(:last-of-type) {
+        margin-right: 1px;
+      }
+      &--active {
+        background-color: theme('colors.felt');
+      }
+      &__text-label {
+        color: #fff !important;
+      }
+    }
+    .mdc-tab-indicator {
+      display: none;
+    }
+    .mdc-tab__ripple::before,
+    .mat-ripple {
+      border-top-right-radius: 6px;
+      border-top-left-radius: 6px;
+    }
+  }
+}

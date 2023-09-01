@@ -1,0 +1,12 @@
+.primary-table.mat-mdc-table {
+  tr {
+    height: 40px;
+  }
+  th {
+    text-wrap: nowrap;
+    background-color: theme('colors.mercury');
+  }
+  tr,td {
+    border: 1px solid theme('colors.mercury');
+  }
+}

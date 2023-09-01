@@ -1,16 +1,17 @@
-import { localStorageSync } from './ngrx-store-localstorage';
-import { ActionReducer } from '@ngrx/store';
+import { ActionReducerMap, ActionReducer, MetaReducer } from '@ngrx/store';
+import { localStorageSync } from 'ngrx-store-localstorage';
+import { AppState, appReducer } from './app.reducer';
 
-export function sessionStorageSyncReducer(
+export const reducers: ActionReducerMap<{ state: AppState }> = { state: appReducer };
+
+function localStorageSyncReducer(
   reducer: ActionReducer<any>
 ): ActionReducer<any> {
   return localStorageSync({
-    keys: [
-      // {
-      //   state: 'state',
-      //   slices: ['id'],
-      // },
-    ],
+    keys: [{ state: ['tables'] }],
     storage: sessionStorage,
+    rehydrate: true,
   })(reducer);
 }
+
+export const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];

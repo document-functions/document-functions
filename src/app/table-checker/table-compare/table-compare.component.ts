@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatTabGroup } from '@angular/material/tabs';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { TableVirtualScrollDataSource } from 'ng-table-virtual-scroll';
+import { Observable, map } from 'rxjs';
 import { selectTables } from 'src/app/+state';
 import { AppPageActions } from 'src/app/+state/actions';
 import { XlsxData } from 'src/app/models/xlsx-data';
@@ -10,14 +13,34 @@ import * as XLSX from 'xlsx';
   selector: 'app-table-compare',
   templateUrl: './table-compare.component.html',
   styleUrls: ['./table-compare.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableCompareComponent implements OnInit {
   getTables$ = new Observable<XlsxData[]>();
 
+  // TODO: ngif true/false, this.virtualScroll.scrollToIndex(0);, test s 2 tablici ednovremenno, fix inline styles
+  // change detection on push
+
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.getTables$ = this.store.select(selectTables);
+    this.getTables$ = this.store.select(selectTables).pipe(
+      map((xlsxFileData) => {
+        const tables = structuredClone(xlsxFileData);
+
+        if (tables.length) {
+          tables.forEach((table) => {
+            table.fileSheets.forEach((sheet) => {
+              table.fileData[sheet] = new TableVirtualScrollDataSource(
+                table.fileData[sheet]
+              );
+            });
+          });
+        }
+
+        return tables;
+      })
+    );
   }
 
   uploadXlsx(ev: any) {
@@ -55,6 +78,7 @@ export class TableCompareComponent implements OnInit {
       };
 
       this.store.dispatch(AppPageActions.setXlsxFileData({ xlsxFileData }));
+      ev.target.value = '';
       console.log('not loading');
     };
 

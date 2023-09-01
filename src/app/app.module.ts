@@ -6,10 +6,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { appReducer } from './+state/app.reducer';
-import { sessionStorageSyncReducer } from './+state/app.meta-reducers';
 import { AppEffects } from './+state/app.effects';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
+import { metaReducers, reducers } from './+state/app.meta-reducers';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,19 +17,7 @@ import { AngularMaterialModule } from './angular-material/angular-material.modul
     BrowserAnimationsModule,
     AppRoutingModule,
     AngularMaterialModule,
-    StoreModule.forRoot(
-      {
-        state: appReducer,
-      },
-      {
-        // TODO
-        // metaReducers: [sessionStorageSyncReducer],
-        runtimeChecks: {
-          strictActionImmutability: true,
-          strictStateImmutability: true,
-        },
-      }
-    ),
+    StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot([AppEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
