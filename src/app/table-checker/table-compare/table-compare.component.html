@@ -21,14 +21,21 @@
       mat-stretch-tabs="false"
       animationDuration="0ms"
       class="excel-tab"
+      [selectedIndex]="getActiveTableIndex$ | async"
+      (selectedTabChange)="setTabIndex($event.index)"
     >
-      <mat-tab *ngFor="let table of tables" [label]="table.fileName">
+      <mat-tab *ngFor="let table of tables" [label]="table.fileName" #tableTab>
         <mat-tab-group mat-stretch-tabs="false" class="sheet-tab">
-          <mat-tab *ngFor="let sheet of table.fileSheets" [label]="sheet">
+          <mat-tab
+            *ngFor="let sheet of table.fileSheets"
+            [label]="sheet"
+            #sheetTab
+          >
             <cdk-virtual-scroll-viewport
               tvsItemSize="48"
-              headerHeight="20"
-              class="h-96"
+              headerHeight="40"
+              class="virtual-scroll"
+              *ngIf="tableTab.isActive && sheetTab.isActive"
             >
               <table
                 class="primary-table"
@@ -36,12 +43,22 @@
                 [dataSource]="table.fileData[sheet]"
               >
                 <ng-container
-                  *ngFor="let column of table.columns[sheet]"
+                  *ngFor="let column of table.columns[sheet]; index as trIndex"
                   [matColumnDef]="column"
+                  [sticky]="trIndex === 0"
                 >
-                  <th mat-header-cell *matHeaderCellDef>{{ column }}</th>
+                  <th
+                    mat-header-cell
+                    *matHeaderCellDef
+                    [ngClass]="{ 'w-11': column === '#' }"
+                  >
+                    {{ column }}
+                  </th>
                   <td mat-cell *matCellDef="let element">
                     {{ element[column] }}
+                  </td>
+                  <td mat-footer-cell *matFooterCellDef>
+                    <div *ngIf="trIndex === 0">Total:</div>
                   </td>
                 </ng-container>
 
@@ -52,6 +69,10 @@
                 <tr
                   mat-row
                   *matRowDef="let row; columns: table.columns[sheet]"
+                ></tr>
+                <tr
+                  mat-footer-row
+                  *matFooterRowDef="table.columns[sheet]; sticky: true"
                 ></tr>
               </table>
             </cdk-virtual-scroll-viewport>

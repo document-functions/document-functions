@@ -8,7 +8,7 @@ function localStorageSyncReducer(
   reducer: ActionReducer<any>
 ): ActionReducer<any> {
   return localStorageSync({
-    keys: [{ state: ['tables'] }],
+    keys: [{ state: ['tables', 'activeTableIndex'] }],
     storage: sessionStorage,
     rehydrate: true,
   })(reducer);

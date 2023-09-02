@@ -1,0 +1,6 @@
+@import '../../../assets/components/mixins/custom-scroll';
+
+.virtual-scroll {
+  @include custom-scroll(#6c6c6c, both);
+  height: calc(100vh - 200px);
+}

@@ -7,3 +7,8 @@ export const selectTables = createSelector(
   selectAppState,
   (state) => state.tables
 );
+
+export const selectActiveTableIndex = createSelector(
+  selectAppState,
+  (state) => state.activeTableIndex
+);

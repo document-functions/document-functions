@@ -4,10 +4,12 @@ import { XlsxData } from '../models/xlsx-data';
 
 export interface AppState {
   tables: XlsxData[];
+  activeTableIndex: number;
 }
 
 export const initialState: AppState = {
   tables: [],
+  activeTableIndex: 0,
 };
 
 export const appReducer = createReducer(
@@ -18,6 +20,12 @@ export const appReducer = createReducer(
     return {
       ...state,
       tables,
+    };
+  }),
+  on(AppPageActions.setTabIndex, (state, { activeTableIndex }): AppState => {
+    return {
+      ...state,
+      activeTableIndex,
     };
   })
 );

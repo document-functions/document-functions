@@ -2,11 +2,15 @@
   tr {
     height: 40px;
   }
-  th {
-    text-wrap: nowrap;
+  th,
+  tfoot,
+  tr td:first-child {
+    white-space: nowrap;
     background-color: theme('colors.mercury');
   }
-  tr,td {
-    border: 1px solid theme('colors.mercury');
+  th,
+  tr,
+  td {
+    border: 1px solid theme('colors.gravity');
   }
 }

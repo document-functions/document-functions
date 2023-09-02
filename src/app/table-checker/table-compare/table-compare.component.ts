@@ -4,7 +4,7 @@ import { MatTabGroup } from '@angular/material/tabs';
 import { Store } from '@ngrx/store';
 import { TableVirtualScrollDataSource } from 'ng-table-virtual-scroll';
 import { Observable, map } from 'rxjs';
-import { selectTables } from 'src/app/+state';
+import { selectActiveTableIndex, selectTables } from 'src/app/+state';
 import { AppPageActions } from 'src/app/+state/actions';
 import { XlsxData } from 'src/app/models/xlsx-data';
 import * as XLSX from 'xlsx';
@@ -17,9 +17,7 @@ import * as XLSX from 'xlsx';
 })
 export class TableCompareComponent implements OnInit {
   getTables$ = new Observable<XlsxData[]>();
-
-  // TODO: ngif true/false, this.virtualScroll.scrollToIndex(0);, test s 2 tablici ednovremenno, fix inline styles
-  // change detection on push
+  getActiveTableIndex$ = new Observable<number>();
 
   constructor(private store: Store) {}
 
@@ -41,12 +39,10 @@ export class TableCompareComponent implements OnInit {
         return tables;
       })
     );
+    this.getActiveTableIndex$ = this.store.select(selectActiveTableIndex);
   }
 
   uploadXlsx(ev: any) {
-    // TODO
-    console.log('loading');
-
     const reader = new FileReader();
     const file = ev.target.files[0];
     const sheets: string[] = [];
@@ -59,7 +55,15 @@ export class TableCompareComponent implements OnInit {
         (initial: any, name: string) => {
           sheets.push(name);
           const sheet = workBook.Sheets[name];
-          initial[name] = XLSX.utils.sheet_to_json(sheet);
+          const sheetData = XLSX.utils.sheet_to_json(sheet);
+          const sheetDataWithIndex = sheetData.map(
+            (row: any, index: number) => ({
+              '#': index + 1,
+              ...row,
+            })
+          );
+
+          initial[name] = sheetDataWithIndex;
 
           if (initial[name].length) {
             columns[name] = Object.keys(initial[name][0]);
@@ -79,11 +83,14 @@ export class TableCompareComponent implements OnInit {
 
       this.store.dispatch(AppPageActions.setXlsxFileData({ xlsxFileData }));
       ev.target.value = '';
-      console.log('not loading');
     };
 
     if (file) {
       reader.readAsBinaryString(file);
     }
+  }
+
+  setTabIndex(activeTableIndex: number) {
+    this.store.dispatch(AppPageActions.setTabIndex({ activeTableIndex }));
   }
 }
