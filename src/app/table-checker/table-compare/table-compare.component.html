@@ -1,22 +1,31 @@
 <div class="main-card relative">
-  <input
-    #triggerFileInput
-    type="file"
-    (change)="uploadXlsx($event)"
-    class="hidden"
-  />
-  <button
-    class="h-8 absolute rounded-b-none"
-    mat-flat-button
-    color="primary"
-    type="button"
-    (click)="triggerFileInput.click()"
-  >
-    <mat-icon>note_add</mat-icon>
-    Upload xlsx file
-  </button>
-
   <ng-container *ngIf="getTables$ | async as tables">
+    <input
+      #triggerFileInput
+      type="file"
+      (change)="uploadXlsx($event)"
+      class="hidden"
+    />
+    <div class="h-8 absolute z-50">
+      <button
+        *ngIf="tables.length"
+        class="w-8 h-8 p-0 me-2"
+        mat-icon-button
+        type="button"
+      >
+        <mat-icon color="primary">compare_arrows</mat-icon>
+      </button>
+
+      <button
+        class="w-8 h-8 p-0"
+        mat-icon-button
+        type="button"
+        (click)="triggerFileInput.click()"
+      >
+        <mat-icon color="primary">note_add</mat-icon>
+      </button>
+    </div>
+
     <mat-tab-group
       mat-stretch-tabs="false"
       animationDuration="0ms"
@@ -31,6 +40,13 @@
             [label]="sheet"
             #sheetTab
           >
+            <div
+              class="text-dove p-2 text-base"
+              *ngIf="!table.fileData[sheet].filteredData.length"
+            >
+              The sheet is empty
+            </div>
+
             <cdk-virtual-scroll-viewport
               tvsItemSize="48"
               headerHeight="40"
@@ -58,7 +74,10 @@
                     {{ element[column] }}
                   </td>
                   <td mat-footer-cell *matFooterCellDef>
-                    <div *ngIf="trIndex === 0">Total:</div>
+                    <div *ngIf="trIndex === 0; else total">Total:</div>
+                    <ng-template #total>
+                      {{ getTotal(table.fileData[sheet].filteredData) }}
+                    </ng-template>
                   </td>
                 </ng-container>
 

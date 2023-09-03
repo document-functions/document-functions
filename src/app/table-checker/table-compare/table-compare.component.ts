@@ -1,6 +1,4 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatTabGroup } from '@angular/material/tabs';
 import { Store } from '@ngrx/store';
 import { TableVirtualScrollDataSource } from 'ng-table-virtual-scroll';
 import { Observable, map } from 'rxjs';
@@ -92,5 +90,15 @@ export class TableCompareComponent implements OnInit {
 
   setTabIndex(activeTableIndex: number) {
     this.store.dispatch(AppPageActions.setTabIndex({ activeTableIndex }));
+  }
+
+  getTotal(tableData: any) {
+    console.log(tableData);
+
+    return 0;
+
+    // return tableData
+    //   .map((data: any) => data)
+    //   .reduce((acc: any, value: any) => acc + value, 0);
   }
 }
