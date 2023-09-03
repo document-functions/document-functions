@@ -1,0 +1,49 @@
+@mixin custom-scroll($color, $direction) {
+  @if $direction==vertical {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  @if $direction==horizontal {
+    overflow-y: hidden;
+    overflow-x: auto;
+  }
+
+  @if $direction==both {
+    overflow: auto;
+  }
+
+  // -webkit-
+  &::-webkit-scrollbar {
+    -webkit-appearance: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $color;
+
+    &:hover {
+      background-color: darken($color, 10%);
+    }
+  }
+  &::-webkit-scrollbar:vertical {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar:horizontal {
+    height: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    border-radius: 4px;
+
+    background-color: transparent;
+  }
+
+  // -moz-
+  scrollbar-color: $color transparent;
+  scrollbar-width: thin;
+}

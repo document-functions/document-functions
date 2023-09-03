@@ -1,0 +1,16 @@
+.primary-table.mat-mdc-table {
+  tr {
+    height: 40px;
+  }
+  th,
+  tfoot,
+  tr td:first-child {
+    white-space: nowrap;
+    background-color: theme('colors.mercury');
+  }
+  th,
+  tr,
+  td {
+    border: 1px solid theme('colors.gravity');
+  }
+}
