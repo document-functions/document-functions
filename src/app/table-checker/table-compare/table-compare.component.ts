@@ -83,7 +83,13 @@ export class TableCompareComponent implements OnInit {
           ];
           initial[name].forEach((tableRow: any) => {
             for (const key in tableRow) {
-              let isColExcluded = new RegExp(excludedCol.join('|'), 'i').test(key);
+              let isColExcluded = new RegExp(excludedCol.join('|'), 'i').test(
+                key
+              );
+
+              if (key === 'отр.') {
+                console.log(totals[key]);
+              }
 
               if (!isColExcluded) {
                 let value = tableRow[key];
@@ -93,6 +99,9 @@ export class TableCompareComponent implements OnInit {
                     value = 0;
                   }
                   totals[key] = (totals[key] || 0) + parseFloat(value);
+                  if (totals[key] === 0) {
+                    delete totals[key];
+                  }
                 } else {
                   excludedCol.push(key);
                   delete totals[key];
