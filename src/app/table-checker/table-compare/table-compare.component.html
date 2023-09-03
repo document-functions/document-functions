@@ -3,7 +3,7 @@
     <input
       #triggerFileInput
       type="file"
-      (change)="uploadXlsx($event)"
+      (change)="convertXlsxToJson($event)"
       class="hidden"
     />
     <div class="h-8 absolute z-50">
@@ -52,7 +52,11 @@
               tvsItemSize="48"
               headerHeight="40"
               class="virtual-scroll"
-              *ngIf="tableTab.isActive && sheetTab.isActive"
+              *ngIf="
+                tableTab.isActive &&
+                sheetTab.isActive &&
+                table.fileData[sheet].filteredData.length
+              "
             >
               <table
                 class="primary-table"

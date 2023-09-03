@@ -1,9 +1,11 @@
-<mat-drawer-container class="example-container">
+<mat-drawer-container>
   <mat-drawer
     *ngIf="getSideNavPanelContent$ | async as content"
     [opened]="!!content"
     mode="over"
     (closedStart)="onSideNavPanelClose()"
+    tabindex="0"
+    class="min-w-[400px]"
   >
     <div class="p-4">
       <app-table-compare-side

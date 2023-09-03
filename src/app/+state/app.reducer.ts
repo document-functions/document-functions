@@ -11,7 +11,7 @@ export interface AppState {
 
 export const initialState: AppState = {
   tables: [],
-  activeTableIndex: 0,
+  activeTableIndex: -1,
   sideNavPanelContent: null,
 };
 
@@ -37,6 +37,40 @@ export const appReducer = createReducer(
       return {
         ...state,
         sideNavPanelContent,
+      };
+    }
+  ),
+  on(AppPageActions.deleteAllTables, (state): AppState => {
+    return {
+      ...state,
+      tables: [],
+      sideNavPanelContent: null,
+    };
+  }),
+  on(AppPageActions.deleteTable, (state, { tableIndex }): AppState => {
+    const currentTables = structuredClone([...state.tables]);
+    currentTables.splice(tableIndex, 1);
+
+    return {
+      ...state,
+      tables: currentTables,
+    };
+  }),
+  on(
+    AppPageActions.deleteSheet,
+    (state, { tableIndex, sheetIndex, sheetName }): AppState => {
+      const currentTables = structuredClone([...state.tables]);
+      const currentTable = currentTables[tableIndex];
+
+      currentTable.fileSheets.splice(sheetIndex, 1);
+      delete currentTable.fileData[sheetName];
+      if (currentTable.columns[sheetName]) {
+        delete currentTable.columns[sheetName];
+      }
+
+      return {
+        ...state,
+        tables: currentTables,
       };
     }
   )

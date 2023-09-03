@@ -16,3 +16,17 @@ export const setSideNavPanel = createAction(
   '[Side nav PAGE] Set side nav panel',
   props<{ sideNavPanelContent: SideNavPanelContents | null }>()
 );
+
+export const deleteAllTables = createAction(
+  '[Side nav PAGE] Delete all tables'
+);
+
+export const deleteTable = createAction(
+  '[Side nav PAGE] Delete table',
+  props<{ tableIndex: number }>()
+);
+
+export const deleteSheet = createAction(
+  '[Side nav PAGE] Delete sheet',
+  props<{ tableIndex: number; sheetIndex: number; sheetName: string }>()
+);

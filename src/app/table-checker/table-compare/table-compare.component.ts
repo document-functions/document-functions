@@ -41,7 +41,7 @@ export class TableCompareComponent implements OnInit {
     this.getActiveTableIndex$ = this.store.select(selectActiveTableIndex);
   }
 
-  uploadXlsx(ev: any) {
+  convertXlsxToJson(ev: any) {
     const reader = new FileReader();
     const file = ev.target.files[0];
     const sheets: string[] = [];
@@ -102,8 +102,6 @@ export class TableCompareComponent implements OnInit {
   }
 
   getTotal(tableData: any) {
-    console.log(tableData);
-
     return 0;
 
     // return tableData

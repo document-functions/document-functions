@@ -1,5 +1,7 @@
+const felt = '31, 114, 70'; // #1f7246
+
 module.exports = {
-  content: ["./src/**/*.{html,js}"],
+  content: ['./src/**/*.{html,js}'],
   important: true,
   theme: {
     extend: {
@@ -9,12 +11,14 @@ module.exports = {
         mercury: '#ebebeb',
         teal: '#ababab',
         dove: '#6c6c6c',
-        felt: '#1f7246',
+        felt: {
+          '01': `rgba(${felt}, .1)`,
+          DEFAULT: `rgba(${felt})`,
+        },
         grand: '#85be9f',
         gravity: '#e0e0e0',
-      }
+      },
     },
   },
   plugins: [],
-}
-
+};
