@@ -69,7 +69,7 @@ export class TableCompareComponent implements OnInit {
           initial[name] = sheetDataWithIndex;
 
           const totals: any = {};
-          const numericRegex = /^\d+(\.\d+)?$/; // Matches numbers with optional decimal point
+          const numericRegex = /^\d+(\.\d+)?$/;
 
           initial[name].forEach((tableRow: any) => {
             for (const key in tableRow) {
