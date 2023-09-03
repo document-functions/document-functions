@@ -49,11 +49,17 @@ export const appReducer = createReducer(
   }),
   on(AppPageActions.deleteTable, (state, { tableIndex }): AppState => {
     const currentTables = structuredClone([...state.tables]);
+    let sideNavPanelContent = structuredClone(state.sideNavPanelContent);
+
     currentTables.splice(tableIndex, 1);
+    if (!currentTables.length) {
+      sideNavPanelContent = null;
+    }
 
     return {
       ...state,
       tables: currentTables,
+      sideNavPanelContent,
     };
   }),
   on(

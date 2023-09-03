@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import './components/tailwind/tailwind-config';
 
 // theme
 @import './components/mat-theme/mat-theme';
