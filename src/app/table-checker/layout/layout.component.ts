@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { Link } from 'src/app/models/link';
 
 @Component({
-  selector: 'app-main',
-  templateUrl: './main.component.html',
-  styleUrls: ['./main.component.scss'],
+  selector: 'app-layout',
+  templateUrl: './layout.component.html',
+  styleUrls: ['./layout.component.scss'],
 })
-export class MainComponent {
+export class LayoutComponent {
   links: Link[] = [
     {
       name: 'Compare tables',

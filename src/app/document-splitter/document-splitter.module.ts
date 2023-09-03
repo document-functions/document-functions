@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DocumentSplitterRoutingModule } from './document-splitter-routing.module';
-import { MainComponent } from './main/main.component';
+import { LayoutComponent } from './layout/layout.component';
 
 @NgModule({
   declarations: [
-    MainComponent
+    LayoutComponent
   ],
   imports: [CommonModule, DocumentSplitterRoutingModule],
 })
