@@ -69,21 +69,35 @@ export class TableCompareComponent implements OnInit {
           initial[name] = sheetDataWithIndex;
 
           const totals: any = {};
-          const numericRegex = /^\d+(\.\d+)?$/;
-
+          const excludedCol = [
+            '#',
+            'egn',
+            'егн',
+            'лнч',
+            'lnch',
+            '№',
+            'код',
+            'code',
+            'месец',
+            'rc'
+          ];
+          const excludedColPattern = excludedCol.join('|');
           initial[name].forEach((tableRow: any) => {
             for (const key in tableRow) {
-              if (key !== '#') {
-                const isEgnColumn = /egn|егн|лнч|lnch|№|код|code/i.test(key);
+              const isColExcluded = new RegExp(excludedColPattern, 'i').test(
+                key
+              );
+              if (!isColExcluded) {
+                let value = tableRow[key];
 
-                if (!isEgnColumn) {
-                  const value = tableRow[key];
-                  if (
-                    (typeof value === 'number' || numericRegex.test(value)) &&
-                    !isNaN(parseFloat(value))
-                  ) {
-                    totals[key] = (totals[key] || 0) + parseFloat(value);
+                if (typeof value === 'number' || !isNaN(value)) {
+                  if (value === null) {
+                    value = 0;
                   }
+                  totals[key] = (totals[key] || 0) + parseFloat(value);
+                } else {
+                  excludedCol.push(key);
+                  delete totals[key];
                 }
               }
             }
