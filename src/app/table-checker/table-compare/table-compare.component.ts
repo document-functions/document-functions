@@ -55,7 +55,10 @@ export class TableCompareComponent implements OnInit {
         (initial: any, name: string) => {
           sheets.push(name);
           const sheet = workBook.Sheets[name];
-          const sheetData = XLSX.utils.sheet_to_json(sheet);
+          const sheetData = XLSX.utils.sheet_to_json(sheet, {
+            raw: false,
+            defval: null,
+          });
           const sheetDataWithIndex = sheetData.map(
             (row: any, index: number) => ({
               '#': index + 1,
@@ -66,12 +69,22 @@ export class TableCompareComponent implements OnInit {
           initial[name] = sheetDataWithIndex;
 
           const totals: any = {};
+          const numericRegex = /^\d+(\.\d+)?$/; // Matches numbers with optional decimal point
+
           initial[name].forEach((tableRow: any) => {
             for (const key in tableRow) {
               if (key !== '#') {
-                totals[key] =
-                  (totals[key] || 0) +
-                  (typeof tableRow[key] === 'number' ? tableRow[key] : 0);
+                const isEgnColumn = /egn|егн|лнч|lnch|№|код|code/i.test(key);
+
+                if (!isEgnColumn) {
+                  const value = tableRow[key];
+                  if (
+                    (typeof value === 'number' || numericRegex.test(value)) &&
+                    !isNaN(parseFloat(value))
+                  ) {
+                    totals[key] = (totals[key] || 0) + parseFloat(value);
+                  }
+                }
               }
             }
           });

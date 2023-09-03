@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { TableVirtualScrollModule } from 'ng-table-virtual-scroll';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   imports: [CommonModule],
@@ -18,6 +19,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
     MatExpansionModule,
     TableVirtualScrollModule,
     MatSidenavModule,
+    MatDividerModule,
   ],
 })
 export class AngularMaterialModule {}

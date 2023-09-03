@@ -4,7 +4,7 @@
       <mat-panel-title>Delete documents</mat-panel-title>
     </mat-expansion-panel-header>
 
-    <div *ngFor="let table of tables; index as tableIndex" class="mb-4">
+    <div *ngFor="let table of tables; index as tableIndex; last as isLast">
       <div
         class="p-1 ps-2 flex rounded-md justify-between items-center hover:bg-felt-01"
       >
@@ -21,7 +21,10 @@
       <div class="ps-7">
         <div
           class="p-1 ps-2 flex rounded-md justify-between items-center hover:bg-felt-01"
-          *ngFor="let sheet of table.fileSheets; index as sheetIndex"
+          *ngFor="
+            let sheet of table.fileSheets;
+            index as sheetIndex;
+          "
         >
           <div>{{ sheet }}</div>
           <button
@@ -32,11 +35,15 @@
           >
             <mat-icon color="primary" class="text-xl">delete</mat-icon>
           </button>
+
+          
         </div>
       </div>
+
+      <mat-divider *ngIf="!isLast" class="my-4"></mat-divider>
     </div>
 
-    <div class="flex justify-end">
+    <div class="flex justify-end mt-4">
       <button
         mat-flat-button
         color="primary"

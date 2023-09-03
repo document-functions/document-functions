@@ -81,12 +81,7 @@
                   <td mat-footer-cell *matFooterCellDef>
                     <div *ngIf="trIndex === 0; else total">Total:</div>
                     <ng-template #total>
-                      {{
-                        table.footers[sheet][column] === '0' ||
-                        table.footers[sheet][column] === 0
-                          ? ''
-                          : table.footers[sheet][column]
-                      }}
+                      {{ table.footers[sheet][column] }}
                     </ng-template>
                   </td>
                 </ng-container>
