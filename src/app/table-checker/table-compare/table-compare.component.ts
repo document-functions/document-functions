@@ -87,10 +87,6 @@ export class TableCompareComponent implements OnInit {
                 key
               );
 
-              if (key === 'отр.') {
-                console.log(totals[key]);
-              }
-
               if (!isColExcluded) {
                 let value = tableRow[key];
 
