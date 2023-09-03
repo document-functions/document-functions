@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { AppEffects } from './+state/app.effects';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
 import { metaReducers, reducers } from './+state/app.meta-reducers';
+import { SidePanelsModule } from './side-panels/side-panels.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,6 +18,7 @@ import { metaReducers, reducers } from './+state/app.meta-reducers';
     BrowserAnimationsModule,
     AppRoutingModule,
     AngularMaterialModule,
+    SidePanelsModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot([AppEffects]),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),

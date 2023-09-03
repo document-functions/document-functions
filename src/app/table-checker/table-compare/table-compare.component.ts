@@ -4,6 +4,7 @@ import { TableVirtualScrollDataSource } from 'ng-table-virtual-scroll';
 import { Observable, map } from 'rxjs';
 import { selectActiveTableIndex, selectTables } from 'src/app/+state';
 import { AppPageActions } from 'src/app/+state/actions';
+import { SideNavPanelContents } from 'src/app/enums/side-nav-panel-contents';
 import { XlsxData } from 'src/app/models/xlsx-data';
 import * as XLSX from 'xlsx';
 
@@ -90,6 +91,14 @@ export class TableCompareComponent implements OnInit {
 
   setTabIndex(activeTableIndex: number) {
     this.store.dispatch(AppPageActions.setTabIndex({ activeTableIndex }));
+  }
+
+  openSideNavPanel() {
+    this.store.dispatch(
+      AppPageActions.setSideNavPanel({
+        sideNavPanelContent: SideNavPanelContents.TableCompare,
+      })
+    );
   }
 
   getTotal(tableData: any) {

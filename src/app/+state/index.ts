@@ -12,3 +12,8 @@ export const selectActiveTableIndex = createSelector(
   selectAppState,
   (state) => state.activeTableIndex
 );
+
+export const selectSideNavPanelContent = createSelector(
+  selectAppState,
+  (state) => state.sideNavPanelContent
+);
