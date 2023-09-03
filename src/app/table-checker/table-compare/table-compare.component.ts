@@ -46,6 +46,7 @@ export class TableCompareComponent implements OnInit {
     const file = ev.target.files[0];
     const sheets: string[] = [];
     const columns: any = {};
+    const footers: any = {};
 
     reader.onload = () => {
       const data = reader.result;
@@ -64,6 +65,18 @@ export class TableCompareComponent implements OnInit {
 
           initial[name] = sheetDataWithIndex;
 
+          const totals: any = {};
+          initial[name].forEach((tableRow: any) => {
+            for (const key in tableRow) {
+              if (key !== '#') {
+                totals[key] =
+                  (totals[key] || 0) +
+                  (typeof tableRow[key] === 'number' ? tableRow[key] : 0);
+              }
+            }
+          });
+          footers[name] = totals;
+
           if (initial[name].length) {
             columns[name] = Object.keys(initial[name][0]);
           }
@@ -78,6 +91,7 @@ export class TableCompareComponent implements OnInit {
         fileSheets: sheets,
         fileData: jsonData,
         columns,
+        footers,
       };
 
       this.store.dispatch(AppPageActions.setXlsxFileData({ xlsxFileData }));
@@ -99,13 +113,5 @@ export class TableCompareComponent implements OnInit {
         sideNavPanelContent: SideNavPanelContents.TableCompare,
       })
     );
-  }
-
-  getTotal(tableData: any) {
-    return 0;
-
-    // return tableData
-    //   .map((data: any) => data)
-    //   .reduce((acc: any, value: any) => acc + value, 0);
   }
 }

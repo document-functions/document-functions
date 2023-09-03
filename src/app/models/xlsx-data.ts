@@ -3,4 +3,5 @@ export interface XlsxData {
   fileSheets: string[];
   fileData: any;
   columns: any;
+  footers: any;
 }

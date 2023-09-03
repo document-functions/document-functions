@@ -64,6 +64,7 @@ export const appReducer = createReducer(
 
       currentTable.fileSheets.splice(sheetIndex, 1);
       delete currentTable.fileData[sheetName];
+      delete currentTable.footers[sheetName];
       if (currentTable.columns[sheetName]) {
         delete currentTable.columns[sheetName];
       }
