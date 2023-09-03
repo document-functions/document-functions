@@ -79,14 +79,12 @@ export class TableCompareComponent implements OnInit {
             'код',
             'code',
             'месец',
-            'rc'
+            'rc',
           ];
-          const excludedColPattern = excludedCol.join('|');
           initial[name].forEach((tableRow: any) => {
             for (const key in tableRow) {
-              const isColExcluded = new RegExp(excludedColPattern, 'i').test(
-                key
-              );
+              let isColExcluded = new RegExp(excludedCol.join('|'), 'i').test(key);
+
               if (!isColExcluded) {
                 let value = tableRow[key];
 
