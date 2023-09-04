@@ -59,15 +59,8 @@ export class TableCompareComponent implements OnInit {
             raw: false,
             defval: null,
           });
-          const sheetDataWithIndex = sheetData.map(
-            (row: any, index: number) => ({
-              '#': index + 1,
-              ...row,
-            })
-          );
 
-          initial[name] = sheetDataWithIndex;
-
+          initial[name] = sheetData;
           const totals: any = {};
           const excludedCol = [
             '#',
@@ -81,7 +74,7 @@ export class TableCompareComponent implements OnInit {
             'месец',
             'rc',
           ];
-          initial[name].forEach((tableRow: any) => {
+          initial[name].forEach((tableRow: any, index: number) => {
             for (const key in tableRow) {
               let isColExcluded = new RegExp(excludedCol.join('|'), 'i').test(
                 key
@@ -104,6 +97,11 @@ export class TableCompareComponent implements OnInit {
                 }
               }
             }
+            initial[name][index] = {
+              '#': index + 1,
+              ...tableRow,
+            };
+            
           });
           footers[name] = totals;
 
