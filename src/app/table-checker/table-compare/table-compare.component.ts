@@ -83,7 +83,7 @@ export class TableCompareComponent implements OnInit {
               if (!isColExcluded) {
                 let value = tableRow[key];
 
-                if (typeof value === 'number' || !isNaN(value)) {
+                if (!isNaN(Number(value))) {
                   if (value === null) {
                     value = 0;
                   }
