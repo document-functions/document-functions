@@ -75,14 +75,14 @@ export class TableCompareComponent implements OnInit {
             'rc',
           ];
           initial[name].forEach((tableRow: any, index: number) => {
+            let updatedTableRow: any = {};
+
             for (const key in tableRow) {
               let isColExcluded = new RegExp(excludedCol.join('|'), 'i').test(
                 key
               );
-
+              let value = tableRow[key];
               if (!isColExcluded) {
-                let value = tableRow[key];
-
                 if (!isNaN(Number(value))) {
                   if (value === null) {
                     value = 0;
@@ -96,12 +96,17 @@ export class TableCompareComponent implements OnInit {
                   delete totals[key];
                 }
               }
+              if (!isNaN(Number(key))) {
+                const newKey = ' ' + key;
+                updatedTableRow[newKey] = value;
+              } else {
+                updatedTableRow[key] = value;
+              }
             }
             initial[name][index] = {
               '#': index + 1,
-              ...tableRow,
+              ...updatedTableRow,
             };
-            
           });
           footers[name] = totals;
 
