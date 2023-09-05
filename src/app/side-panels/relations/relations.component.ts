@@ -5,7 +5,7 @@ import {
   FormControl,
   Validators,
 } from '@angular/forms';
-import { MatChipGrid, MatChipInputEvent } from '@angular/material/chips';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectTables } from 'src/app/+state';
@@ -24,6 +24,7 @@ export class RelationsComponent implements OnInit {
     tableIndex: [null, Validators.required],
     sheet: [null, Validators.required],
     resultColumn: [null, Validators.required],
+    saveInTableColumn: true,
     criteria: this.fb.array([], Validators.required),
     fromColumnIndex: [null, Validators.required],
     toColumnIndex: [null, Validators.required],
@@ -33,6 +34,9 @@ export class RelationsComponent implements OnInit {
   }
   get sheetField() {
     return this.countIfForm.get('sheet') as FormControl<string | null>;
+  }
+  get saveInTableColumnField() {
+    return this.countIfForm.get('saveInTableColumn') as FormControl<boolean>;
   }
   get criteriaFields() {
     return this.countIfForm.get('criteria') as FormArray<any>;
@@ -48,7 +52,6 @@ export class RelationsComponent implements OnInit {
   private get toColumnIndexField() {
     return this.countIfForm.get('toColumnIndex') as FormControl<string | null>;
   }
-  saveInTableColumn = true;
 
   constructor(private fb: FormBuilder, private store: Store) {}
 
@@ -76,7 +79,7 @@ export class RelationsComponent implements OnInit {
   }
 
   toggleSaveColumn() {
-    this.saveInTableColumn = !this.saveInTableColumn;
+    this.saveInTableColumnField.setValue(!this.saveInTableColumnField.value);
   }
 
   addCriteria(event: MatChipInputEvent) {

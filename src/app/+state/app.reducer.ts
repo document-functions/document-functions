@@ -86,6 +86,7 @@ export const appReducer = createReducer(
       tableIndex,
       sheet,
       resultColumn,
+      saveInTableColumn,
       criteria,
       fromColumnIndex,
       toColumnIndex,
@@ -94,10 +95,15 @@ export const appReducer = createReducer(
     const currentTable = currentTables[tableIndex].fileData[sheet];
     let footer = currentTables[tableIndex].footers[sheet];
 
+    if (!saveInTableColumn) {
+      currentTables[tableIndex].columns[sheet].push(resultColumn);
+    }
+
     footer[resultColumn] = 0;
     currentTable.forEach((row: any) => {
       let keyIndex = 0;
       row[resultColumn] = 0;
+
       for (const key in row) {
         if (
           keyIndex >= fromColumnIndex &&

@@ -13,7 +13,7 @@
 
     <div>
       <form [formGroup]="countIfForm">
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" hideRequiredMarker>
           <mat-label>Table</mat-label>
           <mat-select formControlName="tableIndex">
             <mat-option
@@ -26,7 +26,7 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" hideRequiredMarker>
           <mat-label>Sheet</mat-label>
           <mat-select formControlName="sheet">
             <ng-container *ngIf="tableIndexField.value !== null">
@@ -40,7 +40,7 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" hideRequiredMarker>
           <mat-label>Count criteria</mat-label>
           <mat-chip-grid #chipGrid formArrayName="criteria">
             <mat-chip-row
@@ -63,7 +63,7 @@
           />
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" hideRequiredMarker>
           <mat-label>Count from column</mat-label>
           <mat-select formControlName="fromColumnIndex">
             <ng-container *ngIf="sheetField.value !== null">
@@ -82,7 +82,7 @@
           </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" hideRequiredMarker>
           <mat-label>Count to column</mat-label>
           <mat-select formControlName="toColumnIndex">
             <ng-container *ngIf="sheetField.value !== null">
@@ -111,14 +111,24 @@
             <mat-icon color="primary">autorenew</mat-icon>
           </button>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Save in column</mat-label>
+          <mat-form-field appearance="outline" hideRequiredMarker>
+            <mat-label>
+              <ng-container *ngIf="!saveInTableColumnField.value">
+                Add a column
+              </ng-container>
+              <ng-container *ngIf="saveInTableColumnField.value">
+                Save in a column
+              </ng-container>
+            </mat-label>
             <input
-              *ngIf="!saveInTableColumn"
+              *ngIf="!saveInTableColumnField.value"
               formControlName="resultColumn"
               matInput
             />
-            <mat-select *ngIf="saveInTableColumn" formControlName="resultColumn">
+            <mat-select
+              *ngIf="saveInTableColumnField.value"
+              formControlName="resultColumn"
+            >
               <ng-container *ngIf="sheetField.value !== null">
                 <mat-option
                   *ngFor="
