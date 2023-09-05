@@ -17,6 +17,7 @@ module.exports = {
         },
         grand: '#85be9f',
         gravity: '#e0e0e0',
+        honey: '#fb0002',
       },
     },
   },

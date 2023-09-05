@@ -1,59 +1,15 @@
 <mat-accordion multi class="mat-accordion">
-  <mat-expansion-panel *ngIf="getTables$ | async as tables">
+  <mat-expansion-panel expanded>
+    <mat-expansion-panel-header>
+      <mat-panel-title>Relations</mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-relations></app-relations>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>Delete documents</mat-panel-title>
     </mat-expansion-panel-header>
-
-    <div *ngFor="let table of tables; index as tableIndex; last as isLast">
-      <div
-        class="p-1 ps-2 flex rounded-md justify-between items-center hover:bg-felt-01"
-      >
-        <div>{{ table.fileName }}</div>
-        <button
-          class="w-7 h-7 p-0"
-          mat-icon-button
-          type="button"
-          (click)="deleteTable(tableIndex)"
-        >
-          <mat-icon color="primary" class="text-xl">delete</mat-icon>
-        </button>
-      </div>
-      <div class="ps-7">
-        <div
-          class="p-1 ps-2 flex rounded-md justify-between items-center hover:bg-felt-01"
-          *ngFor="
-            let sheet of table.fileSheets;
-            index as sheetIndex;
-          "
-        >
-          <div>{{ sheet }}</div>
-          <button
-            class="w-7 h-7 p-0"
-            mat-icon-button
-            type="button"
-            (click)="deleteSheet(tableIndex, sheetIndex, sheet)"
-          >
-            <mat-icon color="primary" class="text-xl">delete</mat-icon>
-          </button>
-
-          
-        </div>
-      </div>
-
-      <mat-divider *ngIf="!isLast" class="my-4"></mat-divider>
-    </div>
-
-    <div class="flex justify-end mt-4">
-      <button
-        mat-flat-button
-        color="primary"
-        type="button"
-        [disabled]="!tables.length"
-        (click)="deleteAllTAbles()"
-      >
-        <mat-icon>delete</mat-icon>
-        <span>Delete all</span>
-      </button>
-    </div>
+    <app-delete-documents></app-delete-documents>
   </mat-expansion-panel>
 </mat-accordion>

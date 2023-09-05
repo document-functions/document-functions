@@ -8,6 +8,11 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { TableVirtualScrollModule } from 'ng-table-virtual-scroll';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatChipsModule } from '@angular/material/chips';
 
 @NgModule({
   imports: [CommonModule],
@@ -20,6 +25,11 @@ import { MatDividerModule } from '@angular/material/divider';
     TableVirtualScrollModule,
     MatSidenavModule,
     MatDividerModule,
+    MatTooltipModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatChipsModule,
   ],
 })
 export class AngularMaterialModule {}

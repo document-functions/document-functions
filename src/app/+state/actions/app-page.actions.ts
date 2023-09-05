@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { SideNavPanelContents } from 'src/app/enums/side-nav-panel-contents';
+import { RowCountIf } from 'src/app/models/row-count-if';
 import { XlsxData } from 'src/app/models/xlsx-data';
 
 export const setXlsxFileData = createAction(
@@ -29,4 +30,9 @@ export const deleteTable = createAction(
 export const deleteSheet = createAction(
   '[Side nav PAGE] Delete sheet',
   props<{ tableIndex: number; sheetIndex: number; sheetName: string }>()
+);
+
+export const calculateRowCountIf = createAction(
+  '[Side nav PAGE] Calculate row count if',
+  props<{ rowCountIf: RowCountIf }>()
 );

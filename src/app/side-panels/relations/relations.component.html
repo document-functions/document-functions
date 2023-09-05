@@ -1,0 +1,162 @@
+<ng-container *ngIf="getTables$ | async as tables">
+  <div>
+    <div class="flex items-center mb-3">
+      <span class="underline me-2">Count criteria by a row</span>
+      <mat-icon
+        matTooltip="COUNT IF for a row"
+        color="primary"
+        class="text-xl -mt-1.5"
+      >
+        info
+      </mat-icon>
+    </div>
+
+    <div>
+      <form [formGroup]="countIfForm">
+        <mat-form-field appearance="outline">
+          <mat-label>Table</mat-label>
+          <mat-select formControlName="tableIndex">
+            <mat-option
+              *ngFor="let table of tables; index as tableIndex"
+              [value]="tableIndex"
+              (click)="resetRelatedFields()"
+            >
+              {{ table.fileName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Sheet</mat-label>
+          <mat-select formControlName="sheet">
+            <ng-container *ngIf="tableIndexField.value !== null">
+              <mat-option
+                *ngFor="let sheet of tables[tableIndexField.value].fileSheets"
+                [value]="sheet"
+              >
+                {{ sheet }}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Count criteria</mat-label>
+          <mat-chip-grid #chipGrid formArrayName="criteria">
+            <mat-chip-row
+              *ngFor="
+                let criteria of criteriaFields.value;
+                index as criteriaIndex
+              "
+              (removed)="removeCriteria(criteriaIndex)"
+            >
+              {{ criteria }}
+              <button matChipRemove>
+                <mat-icon>cancel</mat-icon>
+              </button>
+            </mat-chip-row>
+          </mat-chip-grid>
+
+          <input
+            [matChipInputFor]="chipGrid"
+            (matChipInputTokenEnd)="addCriteria($event)"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Count from column</mat-label>
+          <mat-select formControlName="fromColumnIndex">
+            <ng-container *ngIf="sheetField.value !== null">
+              <mat-option
+                *ngFor="
+                  let header of tables[tableIndexField.value].headers[
+                    sheetField.value
+                  ];
+                  index as headerIndex
+                "
+                [value]="headerIndex + 1"
+              >
+                {{ header }}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Count to column</mat-label>
+          <mat-select formControlName="toColumnIndex">
+            <ng-container *ngIf="sheetField.value !== null">
+              <mat-option
+                *ngFor="
+                  let header of tables[tableIndexField.value].headers[
+                    sheetField.value
+                  ];
+                  index as headerIndex
+                "
+                [value]="headerIndex + 1"
+              >
+                {{ header }}
+              </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+
+        <div>
+          <button
+            mat-icon-button
+            type="button"
+            matTooltip="Switch between table columns or create a custom column"
+            (click)="toggleSaveColumn()"
+          >
+            <mat-icon color="primary">autorenew</mat-icon>
+          </button>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Save in column</mat-label>
+            <input
+              *ngIf="!saveInTableColumn"
+              formControlName="resultColumn"
+              matInput
+            />
+            <mat-select *ngIf="saveInTableColumn" formControlName="resultColumn">
+              <ng-container *ngIf="sheetField.value !== null">
+                <mat-option
+                  *ngFor="
+                    let header of tables[tableIndexField.value].headers[
+                      sheetField.value
+                    ]
+                  "
+                  [value]="header"
+                >
+                  {{ header }}
+                </mat-option>
+              </ng-container>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="flex justify-end mt-3">
+          <button
+            type="submit"
+            color="primary"
+            mat-flat-button
+            (click)="submitCountIfForm()"
+            [disabled]="countIfForm.invalid"
+          >
+            Apply
+          </button>
+
+          <button
+            type="button"
+            color="warn"
+            mat-stroked-button
+            class="border-honey ms-2"
+            (click)="resetCountIfForm()"
+          >
+            Reset
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-container>

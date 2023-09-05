@@ -47,6 +47,7 @@ export class TableCompareComponent implements OnInit {
     const sheets: string[] = [];
     const columns: any = {};
     const footers: any = {};
+    const headers: any = {};
 
     reader.onload = () => {
       const data = reader.result;
@@ -84,12 +85,11 @@ export class TableCompareComponent implements OnInit {
               let value = tableRow[key];
               if (!isColExcluded) {
                 if (!isNaN(Number(value))) {
-                  if (value === null) {
-                    value = 0;
-                  }
-                  totals[key] = (totals[key] || 0) + parseFloat(value);
-                  if (totals[key] === 0) {
-                    delete totals[key];
+                  if (value !== null) {
+                    totals[key] = (totals[key] || 0) + parseFloat(value);
+                    if (totals[key] === 0) {
+                      delete totals[key];
+                    }
                   }
                 } else {
                   excludedCol.push(key);
@@ -110,6 +110,15 @@ export class TableCompareComponent implements OnInit {
           });
           footers[name] = totals;
 
+          let headerIndex = 0;
+          headers[name] = [];
+          for (const header in initial[name][0]) {
+            if (headerIndex > 0) {
+              headers[name].push(header);
+            }
+            headerIndex++;
+          }
+
           if (initial[name].length) {
             columns[name] = Object.keys(initial[name][0]);
           }
@@ -125,6 +134,7 @@ export class TableCompareComponent implements OnInit {
         fileData: jsonData,
         columns,
         footers,
+        headers,
       };
 
       this.store.dispatch(AppPageActions.setXlsxFileData({ xlsxFileData }));
