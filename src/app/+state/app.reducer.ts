@@ -128,6 +128,7 @@ export const appReducer = createReducer(
       for (const key in row) {
         if (
           row[key] !== null &&
+          key !== resultColumn &&
           range.includes(key) &&
           criteria.includes(row[key].toUpperCase())
         ) {
