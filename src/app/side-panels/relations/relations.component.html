@@ -67,17 +67,18 @@
           <mat-label>Count from column</mat-label>
           <mat-select formControlName="fromColumnIndex">
             <ng-container *ngIf="sheetField.value !== null">
-              <mat-option
+              <ng-container
                 *ngFor="
                   let column of tables[tableIndexField.value].fileColumns[
                     sheetField.value
                   ];
                   index as columnIndex
                 "
-                [value]="columnIndex"
               >
-                {{ column }}
-              </mat-option>
+                <mat-option *ngIf="columnIndex > 0" [value]="columnIndex">
+                  {{ column }}
+                </mat-option>
+              </ng-container>
             </ng-container>
           </mat-select>
         </mat-form-field>
@@ -86,17 +87,18 @@
           <mat-label>Count to column</mat-label>
           <mat-select formControlName="toColumnIndex">
             <ng-container *ngIf="sheetField.value !== null">
-              <mat-option
+              <ng-container
                 *ngFor="
                   let column of tables[tableIndexField.value].fileColumns[
                     sheetField.value
                   ];
                   index as columnIndex
                 "
-                [value]="columnIndex"
               >
-                {{ column }}
-              </mat-option>
+                <mat-option *ngIf="columnIndex > 0" [value]="columnIndex">
+                  {{ column }}
+                </mat-option>
+              </ng-container>
             </ng-container>
           </mat-select>
         </mat-form-field>
