@@ -20,6 +20,8 @@ export class AppValidatorsService {
       return this.store.select(selectActiveCountIfHeaders).pipe(
         map((yourArray) => {
           const exists = yourArray.includes(valueToCheck);
+          console.log(exists); // TODO
+          
           return exists ? { existsInArray: true } : null;
         })
       );

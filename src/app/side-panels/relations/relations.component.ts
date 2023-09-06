@@ -12,6 +12,7 @@ import { selectRowCountIf, selectTables } from 'src/app/+state';
 import { AppPageActions } from 'src/app/+state/actions';
 import { RowCountIf } from 'src/app/models/row-count-if';
 import { XlsxData } from 'src/app/models/xlsx-data';
+import { AppValidatorsService } from 'src/app/validators/app.validators.service';
 
 @Component({
   selector: 'app-relations',
@@ -22,7 +23,6 @@ export class RelationsComponent implements OnInit, OnDestroy {
   getTables$ = new Observable<XlsxData[]>();
   getRowCountIf$ = new Observable<RowCountIf>();
 
-  tableColumns = [];
   countIfForm = this.fb.group({
     tableIndex: [null, Validators.required],
     sheet: [null, Validators.required],
@@ -30,7 +30,7 @@ export class RelationsComponent implements OnInit, OnDestroy {
       null,
       {
         validators: [Validators.required],
-        // asyncValidators: [this.appValidatorsService.checkValueInArray()], TODO
+        asyncValidators: [this.appValidatorsService.checkValueInArray()], // TODO
       },
     ],
     saveInTableColumn: true,
@@ -63,7 +63,11 @@ export class RelationsComponent implements OnInit, OnDestroy {
     return this.countIfForm.get('toColumnIndex') as FormControl<string | null>;
   }
 
-  constructor(private fb: FormBuilder, private store: Store) {}
+  constructor(
+    private fb: FormBuilder,
+    private store: Store,
+    private appValidatorsService: AppValidatorsService
+  ) {}
 
   ngOnInit(): void {
     this.getTables$ = this.store.select(selectTables);
