@@ -22,7 +22,6 @@ export class RelationsComponent implements OnInit, OnDestroy {
   getTables$ = new Observable<XlsxData[]>();
   getRowCountIf$ = new Observable<RowCountIf>();
 
-  isCriteriaUpdated = false;
   countIfForm = this.fb.group({
     tableIndex: [null, Validators.required],
     sheet: [null, Validators.required],
@@ -31,6 +30,7 @@ export class RelationsComponent implements OnInit, OnDestroy {
     criteria: this.fb.array([], Validators.required),
     fromColumnIndex: [null, Validators.required],
     toColumnIndex: [null, Validators.required],
+    addColAfterColIndex: [null],
   });
   get tableIndexField() {
     return this.countIfForm.get('tableIndex') as FormControl<any>;
@@ -82,16 +82,21 @@ export class RelationsComponent implements OnInit, OnDestroy {
   }
 
   submitCountIfForm() {
-    const rowCountIf = this.countIfForm.getRawValue() as any;
-    this.store.dispatch(AppPageActions.calculateRowCountIf({ rowCountIf }));
+    if (this.countIfForm.valid) {
+      const rowCountIf = this.countIfForm.getRawValue() as any;
+      this.store.dispatch(AppPageActions.calculateRowCountIf({ rowCountIf }));
+    }
   }
 
   resetCountIfForm() {
-    this.countIfForm.reset();
+    this.countIfForm.reset({ saveInTableColumn: true });
     this.criteriaFields.value.forEach(() => {
       this.removeCriteria(0);
     });
+
     this.store.dispatch(AppPageActions.clearRowCountIf());
+
+    console.log(this.countIfForm.getRawValue());
   }
 
   resetRelatedFields() {
@@ -103,6 +108,7 @@ export class RelationsComponent implements OnInit, OnDestroy {
 
   toggleSaveColumn() {
     this.saveInTableColumnField.setValue(!this.saveInTableColumnField.value);
+    this.resultColumnField.reset();
   }
 
   addCriteria(event: MatChipInputEvent) {

@@ -6,4 +6,5 @@ export interface RowCountIf {
   criteria: string[];
   fromColumnIndex: number;
   toColumnIndex: number;
+  addColAfterColIndex: number;
 }

@@ -65,16 +65,12 @@ export const appReducer = createReducer(
       sideNavPanelContent,
     };
   }),
-  on(
-    AppPageActions.setRowCountIf,
-    AppPageActions.calculateRowCountIf,
-    (state, { rowCountIf }): AppState => {
-      return {
-        ...state,
-        rowCountIf,
-      };
-    }
-  ),
+  on(AppPageActions.setRowCountIf, (state, { rowCountIf }): AppState => {
+    return {
+      ...state,
+      rowCountIf,
+    };
+  }),
   on(AppPageActions.clearRowCountIf, (state): AppState => {
     return {
       ...state,
@@ -101,6 +97,7 @@ export const appReducer = createReducer(
     }
   ),
   on(AppPageActions.calculateRowCountIf, (state, { rowCountIf }): AppState => {
+    const updatedRowCountIf = structuredClone(rowCountIf);
     const {
       tableIndex,
       sheet,
@@ -109,15 +106,18 @@ export const appReducer = createReducer(
       criteria,
       fromColumnIndex,
       toColumnIndex,
-    } = rowCountIf;
+      addColAfterColIndex,
+    } = updatedRowCountIf;
     const currentTables = structuredClone([...state.tables]);
     const currentTable = currentTables[tableIndex].fileData[sheet];
     let footer = currentTables[tableIndex].fileFooters[sheet];
     const columns = currentTables[tableIndex].fileColumns[sheet];
+    const fromColumnName = columns[fromColumnIndex];
+    const toColumnName = columns[toColumnIndex];
     const range = columns.slice(fromColumnIndex, toColumnIndex + 1);
 
     if (!saveInTableColumn) {
-      currentTables[tableIndex].fileColumns[sheet].push(resultColumn);
+      columns.push(resultColumn);
     }
 
     footer[resultColumn] = 0;
@@ -129,8 +129,9 @@ export const appReducer = createReducer(
         if (
           row[key] !== null &&
           key !== resultColumn &&
+          key !== '#' &&
           range.includes(key) &&
-          criteria.includes(row[key].toUpperCase())
+          criteria.includes(row[key].toString().toUpperCase())
         ) {
           row[resultColumn]++;
           footer[resultColumn]++;
@@ -139,9 +140,23 @@ export const appReducer = createReducer(
       }
     });
 
+    if (addColAfterColIndex) {
+      const targetIndex = addColAfterColIndex + 1;
+      const currentIndex = columns.indexOf(resultColumn);
+
+      if (currentIndex !== -1 && currentIndex !== targetIndex) {
+        columns.splice(currentIndex, 1);
+        columns.splice(targetIndex, 0, resultColumn);
+
+        updatedRowCountIf.fromColumnIndex = columns.indexOf(fromColumnName);
+        updatedRowCountIf.toColumnIndex = columns.indexOf(toColumnName);
+      }
+    }
+
     return {
       ...state,
       tables: currentTables,
+      rowCountIf: updatedRowCountIf,
     };
   })
 );

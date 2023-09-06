@@ -12,7 +12,7 @@
     </div>
 
     <form *ngIf="getRowCountIf$ | async" [formGroup]="countIfForm">
-      <mat-form-field appearance="outline" hideRequiredMarker>
+      <mat-form-field appearance="outline">
         <mat-label>Table</mat-label>
         <mat-select formControlName="tableIndex">
           <mat-option
@@ -25,7 +25,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" hideRequiredMarker>
+      <mat-form-field appearance="outline">
         <mat-label>Sheet</mat-label>
         <mat-select formControlName="sheet">
           <ng-container *ngIf="tableIndexField.value !== null">
@@ -39,8 +39,8 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" hideRequiredMarker>
-        <mat-label>Count criteria</mat-label>
+      <mat-form-field appearance="outline">
+        <mat-label>Count criteria *</mat-label>
         <mat-chip-grid #chipGrid formArrayName="criteria">
           <mat-chip-row
             *ngFor="
@@ -62,7 +62,7 @@
         />
       </mat-form-field>
 
-      <mat-form-field appearance="outline" hideRequiredMarker>
+      <mat-form-field appearance="outline">
         <mat-label>Count from column</mat-label>
         <mat-select formControlName="fromColumnIndex">
           <ng-container *ngIf="sheetField.value !== null">
@@ -82,7 +82,7 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" hideRequiredMarker>
+      <mat-form-field appearance="outline">
         <mat-label>Count to column</mat-label>
         <mat-select formControlName="toColumnIndex">
           <ng-container *ngIf="sheetField.value !== null">
@@ -112,7 +112,7 @@
           <mat-icon color="primary">autorenew</mat-icon>
         </button>
 
-        <mat-form-field appearance="outline" hideRequiredMarker>
+        <mat-form-field appearance="outline">
           <mat-label>
             <ng-container *ngIf="!saveInTableColumnField.value">
               Add column
@@ -141,6 +141,29 @@
               >
                 {{ column }}
               </mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field
+          *ngIf="!saveInTableColumnField.value"
+          appearance="outline"
+        >
+          <mat-label>Add column after</mat-label>
+          <mat-select formControlName="addColAfterColIndex">
+            <ng-container *ngIf="sheetField.value !== null">
+              <ng-container
+                *ngFor="
+                  let column of tables[tableIndexField.value].fileColumns[
+                    sheetField.value
+                  ];
+                  index as columnIndex
+                "
+              >
+                <mat-option *ngIf="columnIndex > 0" [value]="columnIndex">
+                  {{ column }}
+                </mat-option>
+              </ng-container>
             </ng-container>
           </mat-select>
         </mat-form-field>
