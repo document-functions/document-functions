@@ -44,9 +44,9 @@ export class TableCompareComponent implements OnInit {
   convertXlsxToJson(ev: any) {
     const reader = new FileReader();
     const file = ev.target.files[0];
-    const sheets: string[] = [];
-    const columns: any = {};
-    const footers: any = {};
+    const fileSheets: string[] = [];
+    const fileColumns: any = {};
+    const fileFooters: any = {};
 
     reader.onload = () => {
       const data = reader.result;
@@ -77,9 +77,9 @@ export class TableCompareComponent implements OnInit {
             'rc',
           ];
 
-          columns[name] = ['#'];
+          fileColumns[name] = ['#'];
           for (const key in sheetDataFirsElement) {
-            columns[name].push(sheetDataFirsElement[key]);
+            fileColumns[name].push(sheetDataFirsElement[key]);
           }
 
           initial[name] = sheetData;
@@ -106,8 +106,8 @@ export class TableCompareComponent implements OnInit {
             };
           });
 
-          footers[name] = totals;
-          sheets.push(name);
+          fileFooters[name] = totals;
+          fileSheets.push(name);
 
           return initial;
         },
@@ -116,10 +116,10 @@ export class TableCompareComponent implements OnInit {
 
       const xlsxFileData = {
         fileName: file.name,
-        fileSheets: sheets,
+        fileSheets,
         fileData: jsonData,
-        columns,
-        footers,
+        fileColumns,
+        fileFooters,
       };
 
       this.store.dispatch(AppPageActions.setXlsxFileData({ xlsxFileData }));

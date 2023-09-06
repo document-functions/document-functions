@@ -70,9 +70,9 @@ export const appReducer = createReducer(
 
       currentTable.fileSheets.splice(sheetIndex, 1);
       delete currentTable.fileData[sheetName];
-      delete currentTable.footers[sheetName];
-      if (currentTable.columns[sheetName]) {
-        delete currentTable.columns[sheetName];
+      delete currentTable.fileFooters[sheetName];
+      if (currentTable.fileColumns[sheetName]) {
+        delete currentTable.fileColumns[sheetName];
       }
 
       return {
@@ -93,12 +93,12 @@ export const appReducer = createReducer(
     } = rowCountIf;
     const currentTables = structuredClone([...state.tables]);
     const currentTable = currentTables[tableIndex].fileData[sheet];
-    let footer = currentTables[tableIndex].footers[sheet];
-    const columns = currentTables[tableIndex].columns[sheet];
+    let footer = currentTables[tableIndex].fileFooters[sheet];
+    const columns = currentTables[tableIndex].fileColumns[sheet];
     const range = columns.slice(fromColumnIndex, toColumnIndex + 1);
 
     if (!saveInTableColumn) {
-      currentTables[tableIndex].columns[sheet].push(resultColumn);
+      currentTables[tableIndex].fileColumns[sheet].push(resultColumn);
     }
 
     footer[resultColumn] = 0;

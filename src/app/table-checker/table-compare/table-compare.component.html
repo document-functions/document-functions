@@ -17,11 +17,7 @@
         <mat-icon color="primary">compare_arrows</mat-icon>
       </button>
 
-      <button
-        mat-icon-button
-        type="button"
-        (click)="triggerFileInput.click()"
-      >
+      <button mat-icon-button type="button" (click)="triggerFileInput.click()">
         <mat-icon color="primary">note_add</mat-icon>
       </button>
     </div>
@@ -63,7 +59,10 @@
                 [dataSource]="table.fileData[sheet]"
               >
                 <ng-container
-                  *ngFor="let column of table.columns[sheet]; index as trIndex"
+                  *ngFor="
+                    let column of table.fileColumns[sheet];
+                    index as trIndex
+                  "
                   [matColumnDef]="column"
                   [sticky]="trIndex === 0"
                 >
@@ -80,22 +79,22 @@
                   <td mat-footer-cell *matFooterCellDef>
                     <div *ngIf="trIndex === 0; else total">Total:</div>
                     <ng-template #total>
-                      {{ table.footers[sheet][column] }}
+                      {{ table.fileFooters[sheet][column] }}
                     </ng-template>
                   </td>
                 </ng-container>
 
                 <tr
                   mat-header-row
-                  *matHeaderRowDef="table.columns[sheet]; sticky: true"
+                  *matHeaderRowDef="table.fileColumns[sheet]; sticky: true"
                 ></tr>
                 <tr
                   mat-row
-                  *matRowDef="let row; columns: table.columns[sheet]"
+                  *matRowDef="let row; columns: table.fileColumns[sheet]"
                 ></tr>
                 <tr
                   mat-footer-row
-                  *matFooterRowDef="table.columns[sheet]; sticky: true"
+                  *matFooterRowDef="table.fileColumns[sheet]; sticky: true"
                 ></tr>
               </table>
             </cdk-virtual-scroll-viewport>

@@ -69,7 +69,7 @@
             <ng-container *ngIf="sheetField.value !== null">
               <mat-option
                 *ngFor="
-                  let column of tables[tableIndexField.value].columns[
+                  let column of tables[tableIndexField.value].fileColumns[
                     sheetField.value
                   ];
                   index as columnIndex
@@ -88,7 +88,7 @@
             <ng-container *ngIf="sheetField.value !== null">
               <mat-option
                 *ngFor="
-                  let column of tables[tableIndexField.value].columns[
+                  let column of tables[tableIndexField.value].fileColumns[
                     sheetField.value
                   ];
                   index as columnIndex
@@ -132,7 +132,7 @@
               <ng-container *ngIf="sheetField.value !== null">
                 <mat-option
                   *ngFor="
-                    let column of tables[tableIndexField.value].columns[
+                    let column of tables[tableIndexField.value].fileColumns[
                       sheetField.value
                     ]
                   "
