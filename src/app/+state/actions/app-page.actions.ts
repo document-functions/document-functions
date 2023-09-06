@@ -36,3 +36,12 @@ export const calculateRowCountIf = createAction(
   '[Side nav PAGE] Calculate row count if',
   props<{ rowCountIf: RowCountIf }>()
 );
+
+export const setRowCountIf = createAction(
+  '[Side nav PAGE] Set row count if',
+  props<{ rowCountIf: RowCountIf }>()
+);
+
+export const clearRowCountIf = createAction(
+  '[Side nav PAGE] Clear row count if'
+);

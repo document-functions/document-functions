@@ -10,8 +10,17 @@ function localStorageSyncReducer(
   reducer: ActionReducer<any>
 ): ActionReducer<any> {
   return localStorageSync({
-    keys: [{ state: ['tables', 'activeTableIndex', 'sideNavPanelContent'] }],
-    storage: sessionStorage,
+    keys: [
+      {
+        state: [
+          'tables',
+          'activeTableIndex',
+          'sideNavPanelContent',
+          'rowCountIf',
+        ],
+      },
+    ],
+    storage: localStorage,
     rehydrate: true,
   })(reducer);
 }

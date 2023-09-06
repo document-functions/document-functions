@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormArray,
   FormBuilder,
@@ -7,9 +7,10 @@ import {
 } from '@angular/forms';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { selectTables } from 'src/app/+state';
+import { Observable, tap } from 'rxjs';
+import { selectRowCountIf, selectTables } from 'src/app/+state';
 import { AppPageActions } from 'src/app/+state/actions';
+import { RowCountIf } from 'src/app/models/row-count-if';
 import { XlsxData } from 'src/app/models/xlsx-data';
 
 @Component({
@@ -17,9 +18,11 @@ import { XlsxData } from 'src/app/models/xlsx-data';
   templateUrl: './relations.component.html',
   styleUrls: ['./relations.component.scss'],
 })
-export class RelationsComponent implements OnInit {
+export class RelationsComponent implements OnInit, OnDestroy {
   getTables$ = new Observable<XlsxData[]>();
+  getRowCountIf$ = new Observable<RowCountIf>();
 
+  isCriteriaUpdated = false;
   countIfForm = this.fb.group({
     tableIndex: [null, Validators.required],
     sheet: [null, Validators.required],
@@ -57,6 +60,25 @@ export class RelationsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTables$ = this.store.select(selectTables);
+    this.getRowCountIf$ = this.store.select(selectRowCountIf).pipe(
+      tap((rowCountIf) => {
+        const { criteria } = rowCountIf;
+
+        this.countIfForm.patchValue(rowCountIf as any);
+
+        if (criteria?.length) {
+          this.criteriaFields.clear();
+          criteria.forEach((crit: string) => {
+            this.criteriaFields.push(this.fb.control(crit));
+          });
+        }
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    const rowCountIf = this.countIfForm.getRawValue() as any;
+    this.store.dispatch(AppPageActions.setRowCountIf({ rowCountIf }));
   }
 
   submitCountIfForm() {
@@ -69,6 +91,7 @@ export class RelationsComponent implements OnInit {
     this.criteriaFields.value.forEach(() => {
       this.removeCriteria(0);
     });
+    this.store.dispatch(AppPageActions.clearRowCountIf());
   }
 
   resetRelatedFields() {

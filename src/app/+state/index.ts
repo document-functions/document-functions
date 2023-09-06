@@ -17,3 +17,8 @@ export const selectSideNavPanelContent = createSelector(
   selectAppState,
   (state) => state.sideNavPanelContent
 );
+
+export const selectRowCountIf = createSelector(
+  selectAppState,
+  (state) => state.rowCountIf
+);

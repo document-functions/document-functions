@@ -2,17 +2,20 @@ import { createReducer, on } from '@ngrx/store';
 import { AppApiActions, AppPageActions } from './actions';
 import { XlsxData } from '../models/xlsx-data';
 import { SideNavPanelContents } from '../enums/side-nav-panel-contents';
+import { RowCountIf } from '../models/row-count-if';
 
 export interface AppState {
   tables: XlsxData[];
   activeTableIndex: number;
   sideNavPanelContent: SideNavPanelContents | null;
+  rowCountIf: RowCountIf;
 }
 
 export const initialState: AppState = {
   tables: [],
   activeTableIndex: -1,
   sideNavPanelContent: null,
+  rowCountIf: {} as RowCountIf,
 };
 
 export const appReducer = createReducer(
@@ -60,6 +63,22 @@ export const appReducer = createReducer(
       ...state,
       tables: currentTables,
       sideNavPanelContent,
+    };
+  }),
+  on(
+    AppPageActions.setRowCountIf,
+    AppPageActions.calculateRowCountIf,
+    (state, { rowCountIf }): AppState => {
+      return {
+        ...state,
+        rowCountIf,
+      };
+    }
+  ),
+  on(AppPageActions.clearRowCountIf, (state): AppState => {
+    return {
+      ...state,
+      rowCountIf: {} as RowCountIf,
     };
   }),
   on(
