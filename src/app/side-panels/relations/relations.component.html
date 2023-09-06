@@ -1,9 +1,9 @@
 <ng-container *ngIf="getTables$ | async as tables">
   <div>
     <div class="flex items-center mb-3">
-      <span class="underline me-2">Count criteria by row</span>
+      <span class="underline me-2">Count criteria by rows</span>
       <mat-icon
-        matTooltip="COUNT IF for row"
+        matTooltip="COUNT IF per rows"
         color="primary"
         class="text-xl -mt-1.5"
       >
@@ -12,105 +12,100 @@
     </div>
 
     <form *ngIf="getRowCountIf$ | async" [formGroup]="countIfForm">
-      <mat-form-field appearance="outline">
-        <mat-label>Table</mat-label>
-        <mat-select formControlName="tableIndex">
-          <mat-option
-            *ngFor="let table of tables; index as tableIndex"
-            [value]="tableIndex"
-            (click)="resetRelatedFields()"
-          >
-            {{ table.fileName }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Sheet</mat-label>
-        <mat-select formControlName="sheet">
-          <ng-container *ngIf="tableIndexField.value !== null">
+      <div class="grid grid-cols-2 gap-4">
+        <mat-form-field appearance="outline">
+          <mat-label>Table</mat-label>
+          <mat-select formControlName="tableIndex">
             <mat-option
-              *ngFor="let sheet of tables[tableIndexField.value].fileSheets"
-              [value]="sheet"
+              *ngFor="let table of tables; index as tableIndex"
+              [value]="tableIndex"
+              (click)="resetRelatedFields()"
             >
-              {{ sheet }}
+              {{ table.fileName }}
             </mat-option>
-          </ng-container>
-        </mat-select>
-      </mat-form-field>
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Count criteria *</mat-label>
-        <mat-chip-grid #chipGrid formArrayName="criteria">
-          <mat-chip-row
-            *ngFor="
-              let criteria of criteriaFields.value;
-              index as criteriaIndex
-            "
-            (removed)="removeCriteria(criteriaIndex)"
-          >
-            {{ criteria }}
-            <button matChipRemove>
-              <mat-icon>cancel</mat-icon>
-            </button>
-          </mat-chip-row>
-        </mat-chip-grid>
-
-        <input
-          [matChipInputFor]="chipGrid"
-          (matChipInputTokenEnd)="addCriteria($event)"
-        />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Count from column</mat-label>
-        <mat-select formControlName="fromColumnIndex">
-          <ng-container *ngIf="sheetField.value !== null">
-            <ng-container
-              *ngFor="
-                let column of tables[tableIndexField.value].fileColumns[
-                  sheetField.value
-                ];
-                index as columnIndex
-              "
-            >
-              <mat-option *ngIf="columnIndex > 0" [value]="columnIndex">
-                {{ column }}
+        <mat-form-field appearance="outline">
+          <mat-label>Sheet</mat-label>
+          <mat-select formControlName="sheet">
+            <ng-container *ngIf="tableIndexField.value !== null">
+              <mat-option
+                *ngFor="let sheet of tables[tableIndexField.value].fileSheets"
+                [value]="sheet"
+              >
+                {{ sheet }}
               </mat-option>
             </ng-container>
-          </ng-container>
-        </mat-select>
-      </mat-form-field>
+          </mat-select>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Count to column</mat-label>
-        <mat-select formControlName="toColumnIndex">
-          <ng-container *ngIf="sheetField.value !== null">
-            <ng-container
-              *ngFor="
-                let column of tables[tableIndexField.value].fileColumns[
-                  sheetField.value
-                ];
-                index as columnIndex
-              "
-            >
-              <mat-option *ngIf="columnIndex > 0" [value]="columnIndex">
-                {{ column }}
-              </mat-option>
+        <div class="chip-container col-span-2">
+          <mat-form-field appearance="outline" class="chip-field">
+            <mat-label>Count criteria *</mat-label>
+            <mat-chip-grid #chipGrid formArrayName="criteria">
+              <mat-chip-row
+                *ngFor="
+                  let criteria of criteriaFields.value;
+                  index as criteriaIndex
+                "
+                (removed)="removeCriteria(criteriaIndex)"
+              >
+                {{ criteria }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip-row>
+            </mat-chip-grid>
+
+            <input
+              placeholder="Add criteria and press Enter"
+              [matChipInputFor]="chipGrid"
+              [matChipInputAddOnBlur]="true"
+              (matChipInputTokenEnd)="addCriteria($event)"
+            />
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Count from column</mat-label>
+          <mat-select formControlName="fromColumnIndex">
+            <ng-container *ngIf="sheetField.value !== null">
+              <ng-container
+                *ngFor="
+                  let column of tables[tableIndexField.value].fileColumns[
+                    sheetField.value
+                  ];
+                  index as columnIndex
+                "
+              >
+                <mat-option *ngIf="columnIndex > 0" [value]="columnIndex">
+                  {{ column }}
+                </mat-option>
+              </ng-container>
             </ng-container>
-          </ng-container>
-        </mat-select>
-      </mat-form-field>
+          </mat-select>
+        </mat-form-field>
 
-      <div>
-        <button
-          mat-icon-button
-          type="button"
-          matTooltip="Switch between table columns or add column"
-          (click)="toggleSaveColumn()"
-        >
-          <mat-icon color="primary">autorenew</mat-icon>
-        </button>
+        <mat-form-field appearance="outline">
+          <mat-label>Count to column</mat-label>
+          <mat-select formControlName="toColumnIndex">
+            <ng-container *ngIf="sheetField.value !== null">
+              <ng-container
+                *ngFor="
+                  let column of tables[tableIndexField.value].fileColumns[
+                    sheetField.value
+                  ];
+                  index as columnIndex
+                "
+              >
+                <mat-option *ngIf="columnIndex > 0" [value]="columnIndex">
+                  {{ column }}
+                </mat-option>
+              </ng-container>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
 
         <mat-form-field appearance="outline">
           <mat-label>
@@ -131,16 +126,18 @@
             formControlName="resultColumn"
           >
             <ng-container *ngIf="sheetField.value !== null">
-              <mat-option
+              <ng-container
                 *ngFor="
                   let column of tables[tableIndexField.value].fileColumns[
                     sheetField.value
-                  ]
+                  ];
+                  index as columnIndex
                 "
-                [value]="column"
               >
-                {{ column }}
-              </mat-option>
+                <mat-option *ngIf="columnIndex > 0" [value]="column">
+                  {{ column }}
+                </mat-option>
+              </ng-container>
             </ng-container>
           </mat-select>
         </mat-form-field>
@@ -168,6 +165,16 @@
           </mat-select>
         </mat-form-field>
       </div>
+
+      <button
+        mat-icon-button
+        type="button"
+        matTooltip="Switch between table columns or add a column"
+        class="mt-1"
+        (click)="toggleSaveColumn()"
+      >
+        <mat-icon color="primary">autorenew</mat-icon>
+      </button>
 
       <div class="flex justify-end mt-3">
         <button

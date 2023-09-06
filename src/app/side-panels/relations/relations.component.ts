@@ -30,7 +30,7 @@ export class RelationsComponent implements OnInit, OnDestroy {
       null,
       {
         validators: [Validators.required],
-        asyncValidators: [this.appValidatorsService.checkValueInArray()], // TODO
+        // asyncValidators: [this.appValidatorsService.checkValueInArray()], // TODO
       },
     ],
     saveInTableColumn: true,

@@ -29,6 +29,30 @@
   }
 }
 
+.chip-container {
+  position: relative;
+  height: 80px;
+  .chip-field {
+    position: absolute;
+    height: 80px;
+    width: 100%;
+    .mat-mdc-chip {
+      &-grid {
+        .mdc-evolution-chip-set__chips {
+          display: flex;
+          flex-wrap: nowrap;
+          @include custom-scroll(#6c6c6c, horizontal, 4px);
+        }
+      }
+      &-row {
+        height: 28px;
+        margin-top: 8px;
+        background-color: theme('colors.orientals.03');
+      }
+    }
+  }
+}
+
 .mat-mdc-option {
   font-size: 14px;
 }
