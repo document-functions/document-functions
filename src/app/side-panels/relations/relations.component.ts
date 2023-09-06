@@ -22,14 +22,21 @@ export class RelationsComponent implements OnInit, OnDestroy {
   getTables$ = new Observable<XlsxData[]>();
   getRowCountIf$ = new Observable<RowCountIf>();
 
+  tableColumns = [];
   countIfForm = this.fb.group({
     tableIndex: [null, Validators.required],
     sheet: [null, Validators.required],
-    resultColumn: [null, Validators.required],
+    resultColumn: [
+      null,
+      {
+        validators: [Validators.required],
+        // asyncValidators: [this.appValidatorsService.checkValueInArray()], TODO
+      },
+    ],
     saveInTableColumn: true,
     criteria: this.fb.array([], Validators.required),
     fromColumnIndex: [null, Validators.required],
-    toColumnIndex: [null, Validators.required],
+    toColumnIndex: [null, [Validators.required]],
     addColAfterColIndex: [null],
   });
   get tableIndexField() {
@@ -95,8 +102,6 @@ export class RelationsComponent implements OnInit, OnDestroy {
     });
 
     this.store.dispatch(AppPageActions.clearRowCountIf());
-
-    console.log(this.countIfForm.getRawValue());
   }
 
   resetRelatedFields() {

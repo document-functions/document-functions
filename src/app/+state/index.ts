@@ -22,3 +22,9 @@ export const selectRowCountIf = createSelector(
   selectAppState,
   (state) => state.rowCountIf
 );
+
+// TODO
+export const selectActiveCountIfHeaders = createSelector(
+  selectAppState,
+  (state) => ['a', 'b', 'c']
+);
