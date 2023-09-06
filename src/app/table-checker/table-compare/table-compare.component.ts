@@ -47,21 +47,22 @@ export class TableCompareComponent implements OnInit {
     const sheets: string[] = [];
     const columns: any = {};
     const footers: any = {};
-    const headers: any = {};
 
     reader.onload = () => {
       const data = reader.result;
       const workBook = XLSX.read(data, { type: 'binary' });
       const jsonData = workBook.SheetNames.reduce(
         (initial: any, name: string) => {
-          sheets.push(name);
           const sheet = workBook.Sheets[name];
           const sheetData = XLSX.utils.sheet_to_json(sheet, {
             raw: false,
             defval: null,
           });
-
-          initial[name] = sheetData;
+          const sheetDataFirsElement: any = XLSX.utils.sheet_to_json(sheet, {
+            raw: false,
+            defval: null,
+            header: 'A',
+          })[0];
           const totals: any = {};
           const excludedCol = [
             '#',
@@ -75,53 +76,38 @@ export class TableCompareComponent implements OnInit {
             'месец',
             'rc',
           ];
-          initial[name].forEach((tableRow: any, index: number) => {
-            let updatedTableRow: any = {};
 
+          columns[name] = ['#'];
+          for (const key in sheetDataFirsElement) {
+            columns[name].push(sheetDataFirsElement[key]);
+          }
+
+          initial[name] = sheetData;
+          initial[name].forEach((tableRow: any, index: number) => {
             for (const key in tableRow) {
               let isColExcluded = new RegExp(excludedCol.join('|'), 'i').test(
                 key
               );
-              let value = tableRow[key];
+              const value = tableRow[key];
               if (!isColExcluded) {
                 if (!isNaN(Number(value))) {
                   if (value !== null) {
                     totals[key] = (totals[key] || 0) + parseFloat(value);
-                    if (totals[key] === 0) {
-                      delete totals[key];
-                    }
                   }
                 } else {
                   excludedCol.push(key);
                   delete totals[key];
                 }
               }
-              if (!isNaN(Number(key))) {
-                const newKey = ' ' + key;
-                updatedTableRow[newKey] = value;
-              } else {
-                updatedTableRow[key] = value;
-              }
             }
             initial[name][index] = {
               '#': index + 1,
-              ...updatedTableRow,
+              ...tableRow,
             };
           });
+
           footers[name] = totals;
-
-          let headerIndex = 0;
-          headers[name] = [];
-          for (const header in initial[name][0]) {
-            if (headerIndex > 0) {
-              headers[name].push(header);
-            }
-            headerIndex++;
-          }
-
-          if (initial[name].length) {
-            columns[name] = Object.keys(initial[name][0]);
-          }
+          sheets.push(name);
 
           return initial;
         },
@@ -134,7 +120,6 @@ export class TableCompareComponent implements OnInit {
         fileData: jsonData,
         columns,
         footers,
-        headers,
       };
 
       this.store.dispatch(AppPageActions.setXlsxFileData({ xlsxFileData }));

@@ -94,6 +94,8 @@ export const appReducer = createReducer(
     const currentTables = structuredClone([...state.tables]);
     const currentTable = currentTables[tableIndex].fileData[sheet];
     let footer = currentTables[tableIndex].footers[sheet];
+    const columns = currentTables[tableIndex].columns[sheet];
+    const range = columns.slice(fromColumnIndex, toColumnIndex + 1);
 
     if (!saveInTableColumn) {
       currentTables[tableIndex].columns[sheet].push(resultColumn);
@@ -101,20 +103,19 @@ export const appReducer = createReducer(
 
     footer[resultColumn] = 0;
     currentTable.forEach((row: any) => {
-      let keyIndex = 0;
+      let index = 0;
       row[resultColumn] = 0;
 
       for (const key in row) {
         if (
-          keyIndex >= fromColumnIndex &&
-          keyIndex <= toColumnIndex &&
           row[key] !== null &&
+          range.includes(key) &&
           criteria.includes(row[key].toUpperCase())
         ) {
           row[resultColumn]++;
           footer[resultColumn]++;
         }
-        keyIndex++;
+        index++;
       }
     });
 

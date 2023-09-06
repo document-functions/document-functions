@@ -1,9 +1,9 @@
 <ng-container *ngIf="getTables$ | async as tables">
   <div>
     <div class="flex items-center mb-3">
-      <span class="underline me-2">Count criteria by a row</span>
+      <span class="underline me-2">Count criteria by row</span>
       <mat-icon
-        matTooltip="COUNT IF for a row"
+        matTooltip="COUNT IF for row"
         color="primary"
         class="text-xl -mt-1.5"
       >
@@ -69,14 +69,14 @@
             <ng-container *ngIf="sheetField.value !== null">
               <mat-option
                 *ngFor="
-                  let header of tables[tableIndexField.value].headers[
+                  let column of tables[tableIndexField.value].columns[
                     sheetField.value
                   ];
-                  index as headerIndex
+                  index as columnIndex
                 "
-                [value]="headerIndex + 1"
+                [value]="columnIndex"
               >
-                {{ header }}
+                {{ column }}
               </mat-option>
             </ng-container>
           </mat-select>
@@ -88,14 +88,14 @@
             <ng-container *ngIf="sheetField.value !== null">
               <mat-option
                 *ngFor="
-                  let header of tables[tableIndexField.value].headers[
+                  let column of tables[tableIndexField.value].columns[
                     sheetField.value
                   ];
-                  index as headerIndex
+                  index as columnIndex
                 "
-                [value]="headerIndex + 1"
+                [value]="columnIndex"
               >
-                {{ header }}
+                {{ column }}
               </mat-option>
             </ng-container>
           </mat-select>
@@ -105,7 +105,7 @@
           <button
             mat-icon-button
             type="button"
-            matTooltip="Switch between table columns or create a custom column"
+            matTooltip="Switch between table columns or add column"
             (click)="toggleSaveColumn()"
           >
             <mat-icon color="primary">autorenew</mat-icon>
@@ -114,10 +114,10 @@
           <mat-form-field appearance="outline" hideRequiredMarker>
             <mat-label>
               <ng-container *ngIf="!saveInTableColumnField.value">
-                Add a column
+                Add column
               </ng-container>
               <ng-container *ngIf="saveInTableColumnField.value">
-                Save in a column
+                Save in column
               </ng-container>
             </mat-label>
             <input
@@ -132,13 +132,13 @@
               <ng-container *ngIf="sheetField.value !== null">
                 <mat-option
                   *ngFor="
-                    let header of tables[tableIndexField.value].headers[
+                    let column of tables[tableIndexField.value].columns[
                       sheetField.value
                     ]
                   "
-                  [value]="header"
+                  [value]="column"
                 >
-                  {{ header }}
+                  {{ column }}
                 </mat-option>
               </ng-container>
             </mat-select>
