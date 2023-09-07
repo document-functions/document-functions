@@ -9,12 +9,12 @@ import { XlsxData } from 'src/app/models/xlsx-data';
 import * as XLSX from 'xlsx';
 
 @Component({
-  selector: 'app-table-compare',
-  templateUrl: './table-compare.component.html',
-  styleUrls: ['./table-compare.component.scss'],
+  selector: 'app-table-operations',
+  templateUrl: './table-operations.component.html',
+  styleUrls: ['./table-operations.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TableCompareComponent implements OnInit {
+export class TableOperationsComponent implements OnInit {
   getTables$ = new Observable<XlsxData[]>();
   getActiveTableIndex$ = new Observable<number>();
 

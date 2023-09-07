@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
-import { TableCompareComponent } from './table-compare/table-compare.component';
+import { TableOperationsComponent } from './table-operations/table-operations.component';
 import { TableArchiveComponent } from './table-archive/table-archive.component';
 
 const routes: Routes = [
@@ -16,7 +16,7 @@ const routes: Routes = [
       },
       {
         path: 'operations',
-        component: TableCompareComponent,
+        component: TableOperationsComponent,
       },
       {
         path: 'archive',
