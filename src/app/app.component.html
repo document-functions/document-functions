@@ -1,5 +1,6 @@
 <mat-drawer-container>
   <mat-drawer
+    #drawer
     *ngIf="getSideNavPanelContent$ | async as content"
     [opened]="!!content"
     mode="over"
@@ -8,6 +9,19 @@
     class="w-[550px]"
   >
     <div class="p-4">
+      <div class="flex justify-center items-center mb-4 relative">
+        <div class="text-[22px] text-black/[.87] font-medium">Actions</div>
+
+        <button
+          mat-icon-button
+          type="button"
+          class="absolute -top-1 right-0"
+          (click)="drawer.close()"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+
       <app-table-operations-layout
         *ngIf="sideNavPanelContents.TableCompare"
       ></app-table-operations-layout>

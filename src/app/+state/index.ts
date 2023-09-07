@@ -28,6 +28,11 @@ export const selectIsRuleLoading = createSelector(
   (state) => state.isRuleLoading
 );
 
+export const selectTableOperationsAction = createSelector(
+  selectAppState,
+  (state) => state.tableOPerationsAction
+);
+
 // TODO
 export const selectActiveRowCountCriteriaHeaders = createSelector(
   selectAppState,

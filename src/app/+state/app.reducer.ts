@@ -3,6 +3,7 @@ import { AppApiActions, AppPageActions } from './actions';
 import { XlsxData } from '../models/xlsx-data';
 import { SideNavPanelContents } from '../enums/side-nav-panel-contents';
 import { RowCountCriteria } from '../models/row-count-criteria';
+import { TableOperationsAction } from '../models/table-operations-action';
 
 export interface AppState {
   tables: XlsxData[];
@@ -10,6 +11,7 @@ export interface AppState {
   sideNavPanelContent: SideNavPanelContents | null;
   rowCountCriteria: RowCountCriteria;
   isRuleLoading: boolean;
+  tableOPerationsAction: TableOperationsAction;
 }
 
 export const initialState: AppState = {
@@ -18,6 +20,7 @@ export const initialState: AppState = {
   sideNavPanelContent: null,
   rowCountCriteria: {} as RowCountCriteria,
   isRuleLoading: false,
+  tableOPerationsAction: {} as TableOperationsAction,
 };
 
 export const appReducer = createReducer(
@@ -52,6 +55,18 @@ export const appReducer = createReducer(
       sideNavPanelContent: null,
     };
   }),
+  on(
+    AppPageActions.setTableOperationsAction,
+    (state, { action, isExpanded }): AppState => {
+      const updatedAction = structuredClone({ ...state.tableOPerationsAction });
+      updatedAction[action] = isExpanded;
+
+      return {
+        ...state,
+        tableOPerationsAction: updatedAction,
+      };
+    }
+  ),
   on(AppPageActions.deleteTable, (state, { tableIndex }): AppState => {
     const currentTables = structuredClone([...state.tables]);
     let sideNavPanelContent = structuredClone(state.sideNavPanelContent);

@@ -1,12 +1,32 @@
-<mat-accordion multi class="mat-accordion">
-  <mat-expansion-panel expanded>
+<mat-accordion
+  *ngIf="getTableOperationsAction$ | async as action"
+  multi
+  class="mat-accordion"
+>
+  <mat-expansion-panel
+    [expanded]="action.countCriteriaByRow"
+    (opened)="
+      setTableOperationsAction(tableOperationActions.countCriteriaByRow, true)
+    "
+    (closed)="
+      setTableOperationsAction(tableOperationActions.countCriteriaByRow, false)
+    "
+  >
     <mat-expansion-panel-header>
       <mat-panel-title>Count criteria by rows</mat-panel-title>
     </mat-expansion-panel-header>
     <app-table-operations-count-in-row></app-table-operations-count-in-row>
   </mat-expansion-panel>
 
-  <mat-expansion-panel>
+  <mat-expansion-panel
+    [expanded]="action.deleteDocuments"
+    (opened)="
+      setTableOperationsAction(tableOperationActions.deleteDocuments, true)
+    "
+    (closed)="
+      setTableOperationsAction(tableOperationActions.deleteDocuments, false)
+    "
+  >
     <mat-expansion-panel-header>
       <mat-panel-title>Delete documents</mat-panel-title>
     </mat-expansion-panel-header>

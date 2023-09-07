@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { SideNavPanelContents } from 'src/app/enums/side-nav-panel-contents';
+import { TableOperationsActions } from 'src/app/enums/table-operations-actions';
 import { RowCountCriteria } from 'src/app/models/row-count-criteria';
 import { XlsxData } from 'src/app/models/xlsx-data';
 
@@ -48,4 +49,9 @@ export const clearRowCountCriteria = createAction(
 
 export const activateRuleLoader = createAction(
   '[Side nav PAGE] Activate rule loader'
+);
+
+export const setTableOperationsAction = createAction(
+  '[Side nav PAGE] Set table operations action',
+  props<{ action: TableOperationsActions; isExpanded: boolean }>()
 );
