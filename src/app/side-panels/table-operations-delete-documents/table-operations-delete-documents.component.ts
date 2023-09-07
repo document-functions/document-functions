@@ -6,11 +6,11 @@ import { AppPageActions } from 'src/app/+state/actions';
 import { XlsxData } from 'src/app/models/xlsx-data';
 
 @Component({
-  selector: 'app-delete-documents',
-  templateUrl: './delete-documents.component.html',
-  styleUrls: ['./delete-documents.component.scss']
+  selector: 'app-table-operations-delete-documents',
+  templateUrl: './table-operations-delete-documents.component.html',
+  styleUrls: ['./table-operations-delete-documents.component.scss']
 })
-export class DeleteDocumentsComponent implements OnInit {
+export class TableOperationsDeleteDocumentsComponent implements OnInit {
   getTables$ = new Observable<XlsxData[]>();
 
   constructor(private store: Store) {}

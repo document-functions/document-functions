@@ -5,13 +5,13 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'table-checker',
+    redirectTo: 'table-operations',
   },
   {
-    path: 'table-checker',
+    path: 'table-operations',
     loadChildren: () =>
-      import('./table-checker/table-checker.module').then(
-        (m) => m.TableCheckerModule
+      import('./table-operations/table-operations.module').then(
+        (m) => m.TableOperationsModule
       ),
   },
   {
@@ -23,7 +23,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'table-checker',
+    redirectTo: 'table-operations',
   },
 ];
 

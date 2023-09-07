@@ -17,9 +17,9 @@ export class AppComponent implements OnInit {
   sideNavPanelContents = SideNavPanelContents;
   links: Link[] = [
     {
-      name: 'Table checker',
+      name: 'Table operations',
       icon: 'table_chart',
-      url: 'table-checker',
+      url: 'table-operations',
     },
     {
       name: 'Document splitter',

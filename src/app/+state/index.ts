@@ -18,13 +18,13 @@ export const selectSideNavPanelContent = createSelector(
   (state) => state.sideNavPanelContent
 );
 
-export const selectRowCountIf = createSelector(
+export const selectRowCountCriteria = createSelector(
   selectAppState,
-  (state) => state.rowCountIf
+  (state) => state.rowCountCriteria
 );
 
 // TODO
-export const selectActiveCountIfHeaders = createSelector(
+export const selectActiveRowCountCriteriaHeaders = createSelector(
   selectAppState,
   (state) => ['a', 'b', 'c']
 );

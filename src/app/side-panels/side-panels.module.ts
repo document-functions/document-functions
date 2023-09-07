@@ -1,18 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { TableCompareSideComponent } from './table-compare-side/table-compare-side.component';
+import { TableOperationsLayoutComponent } from './table-operations-layout/table-operations-layout.component';
 import { AngularMaterialModule } from '../angular-material/angular-material.module';
-import { DeleteDocumentsComponent } from './delete-documents/delete-documents.component';
-import { RelationsComponent } from './relations/relations.component';
+import { TableOperationsDeleteDocumentsComponent } from './table-operations-delete-documents/table-operations-delete-documents.component';
+import { TableOperationsCountInRowComponent } from './table-operations-count-in-row/table-operations-count-in-row.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
-    TableCompareSideComponent,
-    DeleteDocumentsComponent,
-    RelationsComponent,
+    TableOperationsLayoutComponent,
+    TableOperationsDeleteDocumentsComponent,
+    TableOperationsCountInRowComponent,
   ],
   imports: [CommonModule, AngularMaterialModule, ReactiveFormsModule],
-  exports: [TableCompareSideComponent],
+  exports: [TableOperationsLayoutComponent],
 })
 export class SidePanelsModule {}

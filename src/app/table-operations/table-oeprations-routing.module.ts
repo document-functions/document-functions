@@ -12,10 +12,10 @@ const routes: Routes = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'compare-table',
+        redirectTo: 'operations',
       },
       {
-        path: 'compare-table',
+        path: 'operations',
         component: TableCompareComponent,
       },
       {
@@ -24,7 +24,7 @@ const routes: Routes = [
       },
       {
         path: '**',
-        redirectTo: 'compare-table',
+        redirectTo: 'operations',
       },
     ],
   },
@@ -34,4 +34,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TableCheckerRoutingModule {}
+export class TableOperationsRoutingModule {}

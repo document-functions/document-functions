@@ -9,9 +9,9 @@ import { Link } from 'src/app/models/link';
 export class LayoutComponent {
   links: Link[] = [
     {
-      name: 'Compare tables',
+      name: 'Operations',
       icon: 'compare',
-      url: 'compare-table',
+      url: 'operations',
     },
     {
       name: 'Archive',

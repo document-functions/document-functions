@@ -8,22 +8,22 @@ import {
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Store } from '@ngrx/store';
 import { Observable, tap } from 'rxjs';
-import { selectRowCountIf, selectTables } from 'src/app/+state';
+import { selectRowCountCriteria, selectTables } from 'src/app/+state';
 import { AppPageActions } from 'src/app/+state/actions';
-import { RowCountIf } from 'src/app/models/row-count-if';
+import { RowCountCriteria } from 'src/app/models/row-count-criteria';
 import { XlsxData } from 'src/app/models/xlsx-data';
 import { AppValidatorsService } from 'src/app/validators/app.validators.service';
 
 @Component({
-  selector: 'app-relations',
-  templateUrl: './relations.component.html',
-  styleUrls: ['./relations.component.scss'],
+  selector: 'app-table-operations-count-in-row',
+  templateUrl: './table-operations-count-in-row.component.html',
+  styleUrls: ['./table-operations-count-in-row.component.scss'],
 })
-export class RelationsComponent implements OnInit, OnDestroy {
+export class TableOperationsCountInRowComponent implements OnInit, OnDestroy {
   getTables$ = new Observable<XlsxData[]>();
-  getRowCountIf$ = new Observable<RowCountIf>();
+  getRowCountCriteria$ = new Observable<RowCountCriteria>();
 
-  countIfForm = this.fb.group({
+  rowCountCriteriaForm = this.fb.group({
     tableIndex: [null, Validators.required],
     sheet: [null, Validators.required],
     resultColumn: [
@@ -40,27 +40,33 @@ export class RelationsComponent implements OnInit, OnDestroy {
     addColAfterColIndex: [null],
   });
   get tableIndexField() {
-    return this.countIfForm.get('tableIndex') as FormControl<any>;
+    return this.rowCountCriteriaForm.get('tableIndex') as FormControl<any>;
   }
   get sheetField() {
-    return this.countIfForm.get('sheet') as FormControl<string | null>;
+    return this.rowCountCriteriaForm.get('sheet') as FormControl<string | null>;
   }
   get saveInTableColumnField() {
-    return this.countIfForm.get('saveInTableColumn') as FormControl<boolean>;
+    return this.rowCountCriteriaForm.get(
+      'saveInTableColumn'
+    ) as FormControl<boolean>;
   }
   get criteriaFields() {
-    return this.countIfForm.get('criteria') as FormArray<any>;
+    return this.rowCountCriteriaForm.get('criteria') as FormArray<any>;
   }
   private get resultColumnField() {
-    return this.countIfForm.get('resultColumn') as FormControl<string | null>;
+    return this.rowCountCriteriaForm.get('resultColumn') as FormControl<
+      string | null
+    >;
   }
   private get fromColumnIndexField() {
-    return this.countIfForm.get('fromColumnIndex') as FormControl<
+    return this.rowCountCriteriaForm.get('fromColumnIndex') as FormControl<
       string | null
     >;
   }
   private get toColumnIndexField() {
-    return this.countIfForm.get('toColumnIndex') as FormControl<string | null>;
+    return this.rowCountCriteriaForm.get('toColumnIndex') as FormControl<
+      string | null
+    >;
   }
 
   constructor(
@@ -71,11 +77,11 @@ export class RelationsComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.getTables$ = this.store.select(selectTables);
-    this.getRowCountIf$ = this.store.select(selectRowCountIf).pipe(
-      tap((rowCountIf) => {
-        const { criteria } = rowCountIf;
+    this.getRowCountCriteria$ = this.store.select(selectRowCountCriteria).pipe(
+      tap((row) => {
+        const { criteria } = row;
 
-        this.countIfForm.patchValue(rowCountIf as any);
+        this.rowCountCriteriaForm.patchValue(row as any);
 
         if (criteria?.length) {
           this.criteriaFields.clear();
@@ -88,24 +94,28 @@ export class RelationsComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    const rowCountIf = this.countIfForm.getRawValue() as any;
-    this.store.dispatch(AppPageActions.setRowCountIf({ rowCountIf }));
+    const rowCountCriteria = this.rowCountCriteriaForm.getRawValue() as any;
+    this.store.dispatch(
+      AppPageActions.setRowCountCriteria({ rowCountCriteria })
+    );
   }
 
-  submitCountIfForm() {
-    if (this.countIfForm.valid) {
-      const rowCountIf = this.countIfForm.getRawValue() as any;
-      this.store.dispatch(AppPageActions.calculateRowCountIf({ rowCountIf }));
+  submitRowCountCriteriaForm() {
+    if (this.rowCountCriteriaForm.valid) {
+      const rowCountCriteria = this.rowCountCriteriaForm.getRawValue() as any;
+      this.store.dispatch(
+        AppPageActions.calculateRowCountCriteria({ rowCountCriteria })
+      );
     }
   }
 
-  resetCountIfForm() {
-    this.countIfForm.reset({ saveInTableColumn: true });
+  resetRowCountCriteriaForm() {
+    this.rowCountCriteriaForm.reset({ saveInTableColumn: true });
     this.criteriaFields.value.forEach(() => {
       this.removeCriteria(0);
     });
 
-    this.store.dispatch(AppPageActions.clearRowCountIf());
+    this.store.dispatch(AppPageActions.clearRowCountCriteria());
   }
 
   resetRelatedFields() {

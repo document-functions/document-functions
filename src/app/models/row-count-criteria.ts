@@ -1,4 +1,4 @@
-export interface RowCountIf {
+export interface RowCountCriteria {
   tableIndex: number;
   sheet: string;
   resultColumn: string;

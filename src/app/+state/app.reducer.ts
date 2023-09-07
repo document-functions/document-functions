@@ -2,20 +2,22 @@ import { createReducer, on } from '@ngrx/store';
 import { AppApiActions, AppPageActions } from './actions';
 import { XlsxData } from '../models/xlsx-data';
 import { SideNavPanelContents } from '../enums/side-nav-panel-contents';
-import { RowCountIf } from '../models/row-count-if';
+import { RowCountCriteria } from '../models/row-count-criteria';
 
 export interface AppState {
   tables: XlsxData[];
   activeTableIndex: number;
   sideNavPanelContent: SideNavPanelContents | null;
-  rowCountIf: RowCountIf;
+  rowCountCriteria: RowCountCriteria;
+  isRuleLoading: boolean;
 }
 
 export const initialState: AppState = {
   tables: [],
   activeTableIndex: -1,
   sideNavPanelContent: null,
-  rowCountIf: {} as RowCountIf,
+  rowCountCriteria: {} as RowCountCriteria,
+  isRuleLoading: false,
 };
 
 export const appReducer = createReducer(
@@ -65,16 +67,22 @@ export const appReducer = createReducer(
       sideNavPanelContent,
     };
   }),
-  on(AppPageActions.setRowCountIf, (state, { rowCountIf }): AppState => {
+  on(AppPageActions.setRowCountCriteria, (state, { rowCountCriteria }): AppState => {
     return {
       ...state,
-      rowCountIf,
+      rowCountCriteria,
     };
   }),
-  on(AppPageActions.clearRowCountIf, (state): AppState => {
+  on(AppPageActions.calculateRowCountCriteria, (state): AppState => {
     return {
       ...state,
-      rowCountIf: {} as RowCountIf,
+      isRuleLoading: true,
+    };
+  }),
+  on(AppPageActions.clearRowCountCriteria, (state): AppState => {
+    return {
+      ...state,
+      rowCountCriteria: {} as RowCountCriteria,
     };
   }),
   on(
@@ -96,8 +104,8 @@ export const appReducer = createReducer(
       };
     }
   ),
-  on(AppPageActions.calculateRowCountIf, (state, { rowCountIf }): AppState => {
-    const updatedRowCountIf = structuredClone(rowCountIf);
+  on(AppPageActions.calculateRowCountCriteria, (state, { rowCountCriteria }): AppState => {
+    const updatedRowCountCriteria = structuredClone(rowCountCriteria);
     const {
       tableIndex,
       sheet,
@@ -107,7 +115,7 @@ export const appReducer = createReducer(
       fromColumnIndex,
       toColumnIndex,
       addColAfterColIndex,
-    } = updatedRowCountIf;
+    } = updatedRowCountCriteria;
     const currentTables = structuredClone([...state.tables]);
     const currentTable = currentTables[tableIndex].fileData[sheet];
     let footer = currentTables[tableIndex].fileFooters[sheet];
@@ -148,15 +156,15 @@ export const appReducer = createReducer(
         columns.splice(currentIndex, 1);
         columns.splice(targetIndex, 0, resultColumn);
 
-        updatedRowCountIf.fromColumnIndex = columns.indexOf(fromColumnName);
-        updatedRowCountIf.toColumnIndex = columns.indexOf(toColumnName);
+        updatedRowCountCriteria.fromColumnIndex = columns.indexOf(fromColumnName);
+        updatedRowCountCriteria.toColumnIndex = columns.indexOf(toColumnName);
       }
     }
 
     return {
       ...state,
       tables: currentTables,
-      rowCountIf: updatedRowCountIf,
+      rowCountCriteria: updatedRowCountCriteria,
     };
   })
 );
