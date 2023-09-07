@@ -1,3 +1,10 @@
+@import '../assets/components/mixins/custom-scroll';
+
 .app-content {
   height: calc(100vh - 48px);
+}
+
+.drawer-content {
+  @include custom-scroll(#6c6c6c, vertical);
+  height: calc(100vh - 45px);
 }

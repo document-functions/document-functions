@@ -1,9 +1,9 @@
 <ng-container *ngIf="getTables$ | async as tables">
   <form
-    class="mt-2"
     *ngIf="getColumnSumCriteria$ | async"
     [formGroup]="sumColumnCriteriaForm"
   >
+    <div class="mb-2 text-dove">Store table</div>
     <div class="grid grid-cols-2 gap-4">
       <mat-form-field appearance="outline">
         <mat-label>Table</mat-label>
@@ -31,7 +31,99 @@
           </ng-container>
         </mat-select>
       </mat-form-field>
+
+      <mat-form-field class="col-span-2" appearance="outline">
+        <mat-label>Criteria column (twill be used for the search)</mat-label>
+        <mat-select formControlName="columnCriteria">
+          <ng-container *ngIf="sheetField.value !== null">
+            <ng-container
+              *ngFor="
+                let column of tables[tableIndexField.value].fileColumns[
+                  sheetField.value
+                ];
+                index as columnIndex
+              "
+            >
+              <mat-option *ngIf="columnIndex > 0" [value]="column">
+                {{ column }}
+              </mat-option>
+            </ng-container>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>
+          <ng-container *ngIf="!saveInTableColumnField.value">
+            Add column
+          </ng-container>
+          <ng-container *ngIf="saveInTableColumnField.value">
+            Save in column
+          </ng-container>
+        </mat-label>
+        <input
+          *ngIf="!saveInTableColumnField.value"
+          formControlName="resultColumn"
+          matInput
+        />
+        <mat-select
+          *ngIf="saveInTableColumnField.value"
+          formControlName="resultColumn"
+        >
+          <ng-container *ngIf="sheetField.value !== null">
+            <ng-container
+              *ngFor="
+                let column of tables[tableIndexField.value].fileColumns[
+                  sheetField.value
+                ];
+                index as columnIndex
+              "
+            >
+              <mat-option *ngIf="columnIndex > 0" [value]="column">
+                {{ column }}
+              </mat-option>
+            </ng-container>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field
+        *ngIf="!saveInTableColumnField.value"
+        appearance="outline"
+      >
+        <mat-label>Add column after</mat-label>
+        <mat-select formControlName="addColAfterColIndex">
+          <ng-container *ngIf="sheetField.value !== null">
+            <ng-container
+              *ngFor="
+                let column of tables[tableIndexField.value].fileColumns[
+                  sheetField.value
+                ];
+                index as columnIndex
+              "
+            >
+              <mat-option *ngIf="columnIndex > 0" [value]="columnIndex">
+                {{ column }}
+              </mat-option>
+            </ng-container>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
     </div>
+
+    <button
+      mat-icon-button
+      type="button"
+      matTooltip="Switch between table columns or add a column"
+      class="mt-1"
+      (click)="toggleSaveColumn()"
+    >
+      <mat-icon color="primary">autorenew</mat-icon>
+    </button>
+
+    <mat-divider class="my-4"></mat-divider>
+
+    <div class="mb-2 text-dove">Target table</div>
 
     <div class="flex justify-end mt-3">
       <button

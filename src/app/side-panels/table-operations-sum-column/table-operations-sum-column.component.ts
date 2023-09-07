@@ -21,9 +21,11 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
   sumColumnCriteriaForm = this.fb.group({
     tableIndex: [null, Validators.required],
     sheet: [null, Validators.required],
+    columnCriteria: [null, Validators.required],
     resultColumn: [null, Validators.required],
     saveInTableColumn: true,
     addColAfterColIndex: null,
+    
     targetTableIndex: [null, Validators.required],
     targetSheet: [null, Validators.required],
     targetColumnCriteria: this.fb.array([], Validators.required),
@@ -34,6 +36,16 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
   }
   get sheetField() {
     return this.sumColumnCriteriaForm.get('sheet') as FormControl<
+      string | null
+    >;
+  }
+  get saveInTableColumnField() {
+    return this.sumColumnCriteriaForm.get(
+      'saveInTableColumn'
+    ) as FormControl<boolean>;
+  }
+  private get resultColumnField() {
+    return this.sumColumnCriteriaForm.get('resultColumn') as FormControl<
       string | null
     >;
   }
@@ -89,5 +101,10 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
 
   resetRelatedFields() {
     // TODO
+  }
+
+  toggleSaveColumn() {
+    this.saveInTableColumnField.setValue(!this.saveInTableColumnField.value);
+    this.resultColumnField.reset();
   }
 }

@@ -72,6 +72,9 @@
                     [ngClass]="{ 'w-11': column === '#' }"
                   >
                     {{ column }}
+                    <span *ngIf="column === '#'">
+                      ({{ table.fileData[sheet].filteredData.length }})
+                    </span>
                   </th>
                   <td mat-cell *matCellDef="let element">
                     {{ element[column] }}

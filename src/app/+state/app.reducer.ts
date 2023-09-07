@@ -158,9 +158,9 @@ export const appReducer = createReducer(
       const currentTable = currentTables[tableIndex].fileData[sheet];
       let footer = currentTables[tableIndex].fileFooters[sheet];
       const columns = currentTables[tableIndex].fileColumns[sheet];
+      const range = columns.slice(fromColumnIndex, toColumnIndex + 1);
       const fromColumnName = columns[fromColumnIndex];
       const toColumnName = columns[toColumnIndex];
-      const range = columns.slice(fromColumnIndex, toColumnIndex + 1);
 
       if (!saveInTableColumn) {
         columns.push(resultColumn);

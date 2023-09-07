@@ -3,6 +3,7 @@ import { ColumnSumTargetColumnCriteria } from './column-sum-target-column-criter
 export interface ColumnSumCriteria {
   tableIndex: number;
   sheet: string;
+  columnCriteria: string;
   resultColumn: string;
   saveInTableColumn: boolean;
   addColAfterColIndex: number;
