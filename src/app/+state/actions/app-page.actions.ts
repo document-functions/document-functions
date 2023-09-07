@@ -1,6 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import { SideNavPanelContents } from 'src/app/enums/side-nav-panel-contents';
 import { TableOperationsActions } from 'src/app/enums/table-operations-actions';
+import { ColumnSumCriteria } from 'src/app/models/column-sum-criteria';
 import { RowCountCriteria } from 'src/app/models/row-count-criteria';
 import { XlsxData } from 'src/app/models/xlsx-data';
 
@@ -33,18 +34,32 @@ export const deleteSheet = createAction(
   props<{ tableIndex: number; sheetIndex: number; sheetName: string }>()
 );
 
-export const calculateRowCountCriteria = createAction(
-  '[Side nav PAGE] Calculate row count criteria',
-  props<{ rowCountCriteria: RowCountCriteria }>()
-);
-
 export const setRowCountCriteria = createAction(
   '[Side nav PAGE] Set row count criteria',
   props<{ rowCountCriteria: RowCountCriteria }>()
 );
 
+export const calculateRowCountCriteria = createAction(
+  '[Side nav PAGE] Calculate row count criteria',
+  props<{ rowCountCriteria: RowCountCriteria }>()
+);
+
 export const clearRowCountCriteria = createAction(
   '[Side nav PAGE] Clear row count criteria'
+);
+
+export const setColumnSumCriteria = createAction(
+  '[Side nav PAGE] Set column sum criteria',
+  props<{ columnSumCriteria: ColumnSumCriteria }>()
+);
+
+export const calculateColumnSumCriteria = createAction(
+  '[Side nav PAGE] Calculate column sum criteria',
+  props<{ columnSumCriteria: ColumnSumCriteria }>()
+);
+
+export const clearColumnSumCriteria = createAction(
+  '[Side nav PAGE] Clear column sum criteria'
 );
 
 export const activateRuleLoader = createAction(

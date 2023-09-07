@@ -19,6 +19,21 @@
   </mat-expansion-panel>
 
   <mat-expansion-panel
+    [expanded]="action.sumCriteriaByColumn"
+    (opened)="
+      setTableOperationsAction(tableOperationActions.sumCriteriaByColumn, true)
+    "
+    (closed)="
+      setTableOperationsAction(tableOperationActions.sumCriteriaByColumn, false)
+    "
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title>Sum criteria by column/columns</mat-panel-title>
+    </mat-expansion-panel-header>
+    <app-table-operations-sum-column></app-table-operations-sum-column>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel
     [expanded]="action.deleteDocuments"
     (opened)="
       setTableOperationsAction(tableOperationActions.deleteDocuments, true)

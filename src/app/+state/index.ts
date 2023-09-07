@@ -23,6 +23,11 @@ export const selectRowCountCriteria = createSelector(
   (state) => state.rowCountCriteria
 );
 
+export const selectColumnSumCriteria = createSelector(
+  selectAppState,
+  (state) => state.columnSumCriteria
+);
+
 export const selectIsRuleLoading = createSelector(
   selectAppState,
   (state) => state.isRuleLoading

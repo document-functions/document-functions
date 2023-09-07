@@ -4,12 +4,14 @@ import { XlsxData } from '../models/xlsx-data';
 import { SideNavPanelContents } from '../enums/side-nav-panel-contents';
 import { RowCountCriteria } from '../models/row-count-criteria';
 import { TableOperationsAction } from '../models/table-operations-action';
+import { ColumnSumCriteria } from '../models/column-sum-criteria';
 
 export interface AppState {
   tables: XlsxData[];
   activeTableIndex: number;
   sideNavPanelContent: SideNavPanelContents | null;
   rowCountCriteria: RowCountCriteria;
+  columnSumCriteria: ColumnSumCriteria;
   isRuleLoading: boolean;
   tableOPerationsAction: TableOperationsAction;
 }
@@ -19,6 +21,7 @@ export const initialState: AppState = {
   activeTableIndex: -1,
   sideNavPanelContent: null,
   rowCountCriteria: {} as RowCountCriteria,
+  columnSumCriteria: {} as ColumnSumCriteria,
   isRuleLoading: false,
   tableOPerationsAction: {} as TableOperationsAction,
 };
@@ -91,16 +94,31 @@ export const appReducer = createReducer(
       };
     }
   ),
-  on(AppPageActions.activateRuleLoader, (state): AppState => {
-    return {
-      ...state,
-      isRuleLoading: true,
-    };
-  }),
   on(AppPageActions.clearRowCountCriteria, (state): AppState => {
     return {
       ...state,
       rowCountCriteria: {} as RowCountCriteria,
+    };
+  }),
+  on(
+    AppPageActions.setColumnSumCriteria,
+    (state, { columnSumCriteria }): AppState => {
+      return {
+        ...state,
+        columnSumCriteria,
+      };
+    }
+  ),
+  on(AppPageActions.clearColumnSumCriteria, (state): AppState => {
+    return {
+      ...state,
+      columnSumCriteria: {} as ColumnSumCriteria,
+    };
+  }),
+  on(AppPageActions.activateRuleLoader, (state): AppState => {
+    return {
+      ...state,
+      isRuleLoading: true,
     };
   }),
   on(
@@ -189,5 +207,14 @@ export const appReducer = createReducer(
         isRuleLoading: false,
       };
     }
-  )
+  ),
+  on(AppPageActions.calculateColumnSumCriteria, (state): AppState => {
+    const currentTables = structuredClone([...state.tables]);
+
+    return {
+      ...state,
+      tables: currentTables,
+      isRuleLoading: false,
+    };
+  })
 );

@@ -5,12 +5,14 @@ import { AngularMaterialModule } from '../angular-material/angular-material.modu
 import { TableOperationsDeleteDocumentsComponent } from './table-operations-delete-documents/table-operations-delete-documents.component';
 import { TableOperationsCountInRowComponent } from './table-operations-count-in-row/table-operations-count-in-row.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TableOperationsSumColumnComponent } from './table-operations-sum-column/table-operations-sum-column.component';
 
 @NgModule({
   declarations: [
     TableOperationsLayoutComponent,
     TableOperationsDeleteDocumentsComponent,
     TableOperationsCountInRowComponent,
+    TableOperationsSumColumnComponent,
   ],
   imports: [CommonModule, AngularMaterialModule, ReactiveFormsModule],
   exports: [TableOperationsLayoutComponent],

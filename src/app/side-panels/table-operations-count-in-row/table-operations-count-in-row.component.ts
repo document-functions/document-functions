@@ -37,7 +37,7 @@ export class TableOperationsCountInRowComponent implements OnInit, OnDestroy {
     criteria: this.fb.array([], Validators.required),
     fromColumnIndex: [null, Validators.required],
     toColumnIndex: [null, [Validators.required]],
-    addColAfterColIndex: [null],
+    addColAfterColIndex: null,
   });
   get tableIndexField() {
     return this.rowCountCriteriaForm.get('tableIndex') as FormControl<any>;
@@ -100,7 +100,7 @@ export class TableOperationsCountInRowComponent implements OnInit, OnDestroy {
     );
   }
 
-  submitRowCountCriteriaForm() {
+  submitForm() {
     if (this.rowCountCriteriaForm.valid) {
       const rowCountCriteria = this.rowCountCriteriaForm.getRawValue() as any;
 
@@ -111,7 +111,7 @@ export class TableOperationsCountInRowComponent implements OnInit, OnDestroy {
     }
   }
 
-  resetRowCountCriteriaForm() {
+  resetForm() {
     this.rowCountCriteriaForm.reset({ saveInTableColumn: true });
     this.criteriaFields.value.forEach(() => {
       this.removeCriteria(0);

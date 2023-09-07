@@ -169,7 +169,7 @@
         type="submit"
         color="primary"
         mat-flat-button
-        (click)="submitRowCountCriteriaForm()"
+        (click)="submitForm()"
         [disabled]="rowCountCriteriaForm.invalid"
       >
         Apply
@@ -180,7 +180,7 @@
         color="warn"
         mat-stroked-button
         class="border-honey ms-2"
-        (click)="resetRowCountCriteriaForm()"
+        (click)="resetForm()"
       >
         Reset
       </button>

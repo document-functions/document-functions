@@ -1,0 +1,58 @@
+<ng-container *ngIf="getTables$ | async as tables">
+  <form
+    class="mt-2"
+    *ngIf="getColumnSumCriteria$ | async"
+    [formGroup]="sumColumnCriteriaForm"
+  >
+    <div class="grid grid-cols-2 gap-4">
+      <mat-form-field appearance="outline">
+        <mat-label>Table</mat-label>
+        <mat-select formControlName="tableIndex">
+          <mat-option
+            *ngFor="let table of tables; index as tableIndex"
+            [value]="tableIndex"
+            (click)="resetRelatedFields()"
+          >
+            {{ table.fileName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Sheet</mat-label>
+        <mat-select formControlName="sheet">
+          <ng-container *ngIf="tableIndexField.value !== null">
+            <mat-option
+              *ngFor="let sheet of tables[tableIndexField.value].fileSheets"
+              [value]="sheet"
+            >
+              {{ sheet }}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="flex justify-end mt-3">
+      <button
+        type="submit"
+        color="primary"
+        mat-flat-button
+        (click)="submitForm()"
+        [disabled]="sumColumnCriteriaForm.invalid"
+      >
+        Apply
+      </button>
+
+      <button
+        type="button"
+        color="warn"
+        mat-stroked-button
+        class="border-honey ms-2"
+        (click)="resetForm()"
+      >
+        Reset
+      </button>
+    </div>
+  </form>
+</ng-container>
