@@ -25,7 +25,7 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
     resultColumn: [null, Validators.required],
     saveInTableColumn: true,
     addColAfterColIndex: null,
-    
+
     targetTableIndex: [null, Validators.required],
     targetSheet: [null, Validators.required],
     targetColumnCriteria: this.fb.array([], Validators.required),
@@ -46,6 +46,17 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
   }
   private get resultColumnField() {
     return this.sumColumnCriteriaForm.get('resultColumn') as FormControl<
+      string | null
+    >;
+  }
+
+  get targetTableIndexField() {
+    return this.sumColumnCriteriaForm.get(
+      'targetTableIndex'
+    ) as FormControl<any>;
+  }
+  get targetSheetField() {
+    return this.sumColumnCriteriaForm.get('targetSheet') as FormControl<
       string | null
     >;
   }
@@ -100,6 +111,10 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
   }
 
   resetRelatedFields() {
+    // TODO
+  }
+
+  resetTargetRelatedFields() {
     // TODO
   }
 

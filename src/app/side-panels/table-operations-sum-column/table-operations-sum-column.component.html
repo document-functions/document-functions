@@ -124,6 +124,34 @@
     <mat-divider class="my-4"></mat-divider>
 
     <div class="mb-2 text-dove">Target table</div>
+    <div class="grid grid-cols-2 gap-4">
+      <mat-form-field appearance="outline">
+        <mat-label>Table</mat-label>
+        <mat-select formControlName="targetTableIndex">
+          <mat-option
+            *ngFor="let table of tables; index as tableIndex"
+            [value]="tableIndex"
+            (click)="resetTargetRelatedFields()"
+          >
+            {{ table.fileName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Sheet</mat-label>
+        <mat-select formControlName="targetSheet">
+          <ng-container *ngIf="targetTableIndexField.value !== null">
+            <mat-option
+              *ngFor="let sheet of tables[targetTableIndexField.value].fileSheets"
+              [value]="sheet"
+            >
+              {{ sheet }}
+            </mat-option>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
     <div class="flex justify-end mt-3">
       <button
