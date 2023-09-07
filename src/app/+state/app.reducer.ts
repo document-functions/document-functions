@@ -67,13 +67,16 @@ export const appReducer = createReducer(
       sideNavPanelContent,
     };
   }),
-  on(AppPageActions.setRowCountCriteria, (state, { rowCountCriteria }): AppState => {
-    return {
-      ...state,
-      rowCountCriteria,
-    };
-  }),
-  on(AppPageActions.calculateRowCountCriteria, (state): AppState => {
+  on(
+    AppPageActions.setRowCountCriteria,
+    (state, { rowCountCriteria }): AppState => {
+      return {
+        ...state,
+        rowCountCriteria,
+      };
+    }
+  ),
+  on(AppPageActions.activateRuleLoader, (state): AppState => {
     return {
       ...state,
       isRuleLoading: true,
@@ -104,67 +107,72 @@ export const appReducer = createReducer(
       };
     }
   ),
-  on(AppPageActions.calculateRowCountCriteria, (state, { rowCountCriteria }): AppState => {
-    const updatedRowCountCriteria = structuredClone(rowCountCriteria);
-    const {
-      tableIndex,
-      sheet,
-      resultColumn,
-      saveInTableColumn,
-      criteria,
-      fromColumnIndex,
-      toColumnIndex,
-      addColAfterColIndex,
-    } = updatedRowCountCriteria;
-    const currentTables = structuredClone([...state.tables]);
-    const currentTable = currentTables[tableIndex].fileData[sheet];
-    let footer = currentTables[tableIndex].fileFooters[sheet];
-    const columns = currentTables[tableIndex].fileColumns[sheet];
-    const fromColumnName = columns[fromColumnIndex];
-    const toColumnName = columns[toColumnIndex];
-    const range = columns.slice(fromColumnIndex, toColumnIndex + 1);
+  on(
+    AppPageActions.calculateRowCountCriteria,
+    (state, { rowCountCriteria }): AppState => {
+      const updatedRowCountCriteria = structuredClone(rowCountCriteria);
+      const {
+        tableIndex,
+        sheet,
+        resultColumn,
+        saveInTableColumn,
+        criteria,
+        fromColumnIndex,
+        toColumnIndex,
+        addColAfterColIndex,
+      } = updatedRowCountCriteria;
+      const currentTables = structuredClone([...state.tables]);
+      const currentTable = currentTables[tableIndex].fileData[sheet];
+      let footer = currentTables[tableIndex].fileFooters[sheet];
+      const columns = currentTables[tableIndex].fileColumns[sheet];
+      const fromColumnName = columns[fromColumnIndex];
+      const toColumnName = columns[toColumnIndex];
+      const range = columns.slice(fromColumnIndex, toColumnIndex + 1);
 
-    if (!saveInTableColumn) {
-      columns.push(resultColumn);
-    }
+      if (!saveInTableColumn) {
+        columns.push(resultColumn);
+      }
 
-    footer[resultColumn] = 0;
-    currentTable.forEach((row: any) => {
-      let index = 0;
-      row[resultColumn] = 0;
+      footer[resultColumn] = 0;
+      currentTable.forEach((row: any) => {
+        let index = 0;
+        row[resultColumn] = 0;
 
-      for (const key in row) {
-        if (
-          row[key] !== null &&
-          key !== resultColumn &&
-          key !== '#' &&
-          range.includes(key) &&
-          criteria.includes(row[key].toString().toUpperCase())
-        ) {
-          row[resultColumn]++;
-          footer[resultColumn]++;
+        for (const key in row) {
+          if (
+            row[key] !== null &&
+            key !== resultColumn &&
+            key !== '#' &&
+            range.includes(key) &&
+            criteria.includes(row[key].toString().toUpperCase())
+          ) {
+            row[resultColumn]++;
+            footer[resultColumn]++;
+          }
+          index++;
         }
-        index++;
+      });
+
+      if (addColAfterColIndex) {
+        const targetIndex = addColAfterColIndex + 1;
+        const currentIndex = columns.indexOf(resultColumn);
+
+        if (currentIndex !== -1 && currentIndex !== targetIndex) {
+          columns.splice(currentIndex, 1);
+          columns.splice(targetIndex, 0, resultColumn);
+
+          updatedRowCountCriteria.fromColumnIndex =
+            columns.indexOf(fromColumnName);
+          updatedRowCountCriteria.toColumnIndex = columns.indexOf(toColumnName);
+        }
       }
-    });
 
-    if (addColAfterColIndex) {
-      const targetIndex = addColAfterColIndex + 1;
-      const currentIndex = columns.indexOf(resultColumn);
-
-      if (currentIndex !== -1 && currentIndex !== targetIndex) {
-        columns.splice(currentIndex, 1);
-        columns.splice(targetIndex, 0, resultColumn);
-
-        updatedRowCountCriteria.fromColumnIndex = columns.indexOf(fromColumnName);
-        updatedRowCountCriteria.toColumnIndex = columns.indexOf(toColumnName);
-      }
+      return {
+        ...state,
+        tables: currentTables,
+        rowCountCriteria: updatedRowCountCriteria,
+        isRuleLoading: false,
+      };
     }
-
-    return {
-      ...state,
-      tables: currentTables,
-      rowCountCriteria: updatedRowCountCriteria,
-    };
-  })
+  )
 );

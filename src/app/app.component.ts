@@ -3,7 +3,7 @@ import { Link } from './models/link';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { SideNavPanelContents } from './enums/side-nav-panel-contents';
-import { selectSideNavPanelContent } from './+state';
+import { selectIsRuleLoading, selectSideNavPanelContent } from './+state';
 import { AppPageActions } from './+state/actions';
 
 @Component({
@@ -13,6 +13,7 @@ import { AppPageActions } from './+state/actions';
 })
 export class AppComponent implements OnInit {
   getSideNavPanelContent$ = new Observable<SideNavPanelContents | null>();
+  getIsRuleLoading$ = new Observable<boolean>();
 
   sideNavPanelContents = SideNavPanelContents;
   links: Link[] = [
@@ -32,6 +33,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSideNavPanelContent$ = this.store.select(selectSideNavPanelContent);
+    this.getIsRuleLoading$ = this.store.select(selectIsRuleLoading);
   }
 
   onSideNavPanelClose() {

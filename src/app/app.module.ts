@@ -10,6 +10,7 @@ import { AppEffects } from './+state/app.effects';
 import { AngularMaterialModule } from './angular-material/angular-material.module';
 import { metaReducers, reducers } from './+state/app.meta-reducers';
 import { SidePanelsModule } from './side-panels/side-panels.module';
+import { LoaderModule } from './loader/loader.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +22,7 @@ import { SidePanelsModule } from './side-panels/side-panels.module';
     SidePanelsModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot([AppEffects]),
+    LoaderModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
   ],
   providers: [],

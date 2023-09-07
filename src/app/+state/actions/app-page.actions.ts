@@ -4,12 +4,12 @@ import { RowCountCriteria } from 'src/app/models/row-count-criteria';
 import { XlsxData } from 'src/app/models/xlsx-data';
 
 export const setXlsxFileData = createAction(
-  '[Table compare PAGE] Set table data',
+  '[Table operations PAGE] Set table data',
   props<{ xlsxFileData: XlsxData }>()
 );
 
 export const setTabIndex = createAction(
-  '[Table compare PAGE] Set active index',
+  '[Table operations PAGE] Set active index',
   props<{ activeTableIndex: number }>()
 );
 
@@ -44,4 +44,8 @@ export const setRowCountCriteria = createAction(
 
 export const clearRowCountCriteria = createAction(
   '[Side nav PAGE] Clear row count criteria'
+);
+
+export const activateRuleLoader = createAction(
+  '[Side nav PAGE] Activate rule loader'
 );

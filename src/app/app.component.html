@@ -12,6 +12,8 @@
         *ngIf="sideNavPanelContents.TableCompare"
       ></app-table-operations-layout>
     </div>
+
+    <app-loader *ngIf="getIsRuleLoading$ | async"></app-loader>
   </mat-drawer>
 
   <mat-drawer-content>

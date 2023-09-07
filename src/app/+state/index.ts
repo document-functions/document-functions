@@ -23,6 +23,11 @@ export const selectRowCountCriteria = createSelector(
   (state) => state.rowCountCriteria
 );
 
+export const selectIsRuleLoading = createSelector(
+  selectAppState,
+  (state) => state.isRuleLoading
+);
+
 // TODO
 export const selectActiveRowCountCriteriaHeaders = createSelector(
   selectAppState,

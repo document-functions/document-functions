@@ -103,6 +103,8 @@ export class TableOperationsCountInRowComponent implements OnInit, OnDestroy {
   submitRowCountCriteriaForm() {
     if (this.rowCountCriteriaForm.valid) {
       const rowCountCriteria = this.rowCountCriteriaForm.getRawValue() as any;
+
+      this.store.dispatch(AppPageActions.activateRuleLoader());
       this.store.dispatch(
         AppPageActions.calculateRowCountCriteria({ rowCountCriteria })
       );
