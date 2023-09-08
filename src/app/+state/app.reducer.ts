@@ -256,8 +256,6 @@ export const appReducer = createReducer(
         });
       }
 
-      console.log(targetTable);
-
       if (!saveInTableColumn) {
         currentColumns.push(resultColumn);
       }
@@ -280,17 +278,14 @@ export const appReducer = createReducer(
                     .trim() ===
                     targetRow[targetKey].toString().replace(/^0+/, '').trim()
                 ) {
-                  if (!isNaN(Number(targetRow[targetSumColumn]))) {
-                    if (targetRow[targetSumColumn] !== null) {
-                      currentRow[resultColumn] =
-                        (currentRow[resultColumn] || 0) +
-                        parseFloat(targetRow[targetSumColumn]);
+                  if (!isNaN(Number(targetRow[targetSumColumn])) && targetRow[targetSumColumn] !== null) {
+                      currentRow[resultColumn] += parseFloat(
+                        targetRow[targetSumColumn]
+                      );
 
-                      currentFooter[resultColumn] += currentRow[resultColumn];
-
-                      console.log(targetTable);
-                      
-                    }
+                      currentFooter[resultColumn] += parseFloat(
+                        targetRow[targetSumColumn]
+                      );
                   }
                 }
               }
