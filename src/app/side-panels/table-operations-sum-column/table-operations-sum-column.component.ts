@@ -151,7 +151,7 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
   }
 
   addTargetCriteria(customCriteria?: ColumnSumTargetColumnCriteria) {
-    const criteria = this.fb.group({
+    const criteriaForm = this.fb.group({
       targetColumnCriteria: [
         customCriteria ? customCriteria.targetColumnCriteria : null,
         Validators.required,
@@ -161,7 +161,7 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
         : null,
     });
 
-    this.targetColumnCriteriaFields.push(criteria);
+    this.targetColumnCriteriaFields.push(criteriaForm);
   }
 
   deleteTargetCriteria(index: number) {
