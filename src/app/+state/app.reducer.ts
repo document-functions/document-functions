@@ -182,7 +182,7 @@ export const appReducer = createReducer(
             key !== resultColumn &&
             key !== '#' &&
             range.includes(key) &&
-            criteria.includes(row[key].toString().toUpperCase())
+            criteria.includes(row[key].toString().toUpperCase().trim())
           ) {
             row[resultColumn]++;
             footer[resultColumn]++;
@@ -227,19 +227,31 @@ export const appReducer = createReducer(
         targetTableIndex,
         targetSheet,
         targetColumnCriteria,
+        targetColumnAdditionalCriteria,
         targetSumColumn,
       } = columnSumCriteria;
-      const currentTable = currentTables[tableIndex].fileData[sheet];
-      const targetTable = currentTables[targetTableIndex].fileData[targetSheet];
-      let footer = currentTables[tableIndex].fileFooters[sheet];
 
-      footer[resultColumn] = 0;
+      const currentTable = currentTables[tableIndex].fileData[sheet];
+      let currentFooter = currentTables[tableIndex].fileFooters[sheet];
+      const currentColumns = currentTables[tableIndex].fileColumns[sheet];
+
+      const targetTable = currentTables[targetTableIndex].fileData[targetSheet];
+
+      if (!saveInTableColumn) {
+        currentColumns.push(resultColumn);
+      }
+
+      currentFooter[resultColumn] = 0;
       currentTable.forEach((currentRow: any) => {
+        currentRow[resultColumn] = 0;
+
         for (const currentKey in currentRow) {
           if (currentKey === columnCriteria) {
             targetTable.forEach((targetRow: any) => {
               for (const targetKey in targetRow) {
                 if (
+                  !targetColumnAdditionalCriteria?.length &&
+                  targetKey === targetColumnCriteria &&
                   currentRow[currentKey] &&
                   targetRow[targetKey] &&
                   currentRow[currentKey]
@@ -248,10 +260,16 @@ export const appReducer = createReducer(
                     .trim() ===
                     targetRow[targetKey].toString().replace(/^0+/, '').trim()
                 ) {
-                  //
-                  console.log(
-                    currentRow[currentKey] + '/' + targetRow[targetKey]
-                  );
+                  if (!isNaN(Number(targetRow[targetSumColumn]))) {
+                    if (targetRow[targetSumColumn] !== null) {
+                      currentRow[resultColumn] =
+                        (currentRow[resultColumn] || 0) +
+                        parseFloat(targetRow[targetSumColumn]);
+
+                      currentFooter[resultColumn] =
+                        currentFooter[resultColumn] + currentRow[resultColumn];
+                    }
+                  }
                 }
               }
             });
@@ -259,9 +277,19 @@ export const appReducer = createReducer(
         }
       });
 
+      if (addColAfterColIndex) {
+        const targetIndex = addColAfterColIndex + 1;
+        const currentIndex = currentColumns.indexOf(resultColumn);
+
+        if (currentIndex !== -1 && currentIndex !== targetIndex) {
+          currentColumns.splice(currentIndex, 1);
+          currentColumns.splice(targetIndex, 0, resultColumn);
+        }
+      }
+
       return {
         ...state,
-        // tables: currentTables,
+        tables: currentTables,
         isRuleLoading: false,
       };
     }

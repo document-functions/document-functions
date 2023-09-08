@@ -158,8 +158,8 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Sum column</mat-label>
-        <mat-select formControlName="targetSumColumn">
+        <mat-label>Criteria column</mat-label>
+        <mat-select formControlName="targetColumnCriteria">
           <ng-container *ngIf="targetSheetField.value !== null">
             <ng-container
               *ngFor="
@@ -178,8 +178,8 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Criteria column</mat-label>
-        <mat-select formControlName="targetColumnCriteria">
+        <mat-label>Sum column</mat-label>
+        <mat-select formControlName="targetSumColumn">
           <ng-container *ngIf="targetSheetField.value !== null">
             <ng-container
               *ngFor="
