@@ -33,7 +33,7 @@
       </mat-form-field>
 
       <mat-form-field class="col-span-2" appearance="outline">
-        <mat-label>Criteria column (twill be used for the search)</mat-label>
+        <mat-label>Criteria column</mat-label>
         <mat-select formControlName="columnCriteria">
           <ng-container *ngIf="sheetField.value !== null">
             <ng-container
@@ -155,9 +155,29 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-form-field class="col-span-2" appearance="outline">
+      <mat-form-field appearance="outline">
         <mat-label>Sum column</mat-label>
         <mat-select formControlName="targetSumColumn">
+          <ng-container *ngIf="targetSheetField.value !== null">
+            <ng-container
+              *ngFor="
+                let column of tables[targetTableIndexField.value].fileColumns[
+                  targetSheetField.value
+                ];
+                index as columnIndex
+              "
+            >
+              <mat-option *ngIf="columnIndex > 0" [value]="column">
+                {{ column }}
+              </mat-option>
+            </ng-container>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Criteria column</mat-label>
+        <mat-select formControlName="targetColumnCriteria">
           <ng-container *ngIf="targetSheetField.value !== null">
             <ng-container
               *ngFor="
@@ -177,7 +197,7 @@
     </div>
 
     <div class="flex items-center mb-2.5">
-      <div class="me-2 text-dove">Criteria</div>
+      <div class="me-2 text-dove">Additional criteria</div>
       <button
         mat-icon-button
         type="button"
@@ -187,10 +207,10 @@
         <mat-icon class="text-xl">add_circle_outline</mat-icon>
       </button>
     </div>
-    <ng-container formArrayName="targetColumnCriteria">
+    <ng-container formArrayName="targetColumnAdditionalCriteria">
       <ng-container
         *ngFor="
-          let targetCriteriaForm of targetColumnCriteriaFields.controls;
+          let targetCriteriaForm of targetColumnAdditionalCriteriaFields.controls;
           index as targetCriteriaIndex
         "
       >
@@ -219,13 +239,12 @@
               <mat-label>Custom criteria column</mat-label>
               <mat-select formControlName="targetColumnCustomCriteria">
                 <ng-container *ngIf="targetSheetField.value !== null">
-                  <mat-option [value]="''">---</mat-option>
                   <ng-container
                     *ngFor="
                       let column of tables[targetTableIndexField.value]
                         .fileData[targetSheetField.value]
                         | unique
-                          : targetColumnCriteriaFields.controls[
+                          : targetColumnAdditionalCriteriaFields.controls[
                               targetCriteriaIndex
                             ].value['targetColumnCriteria'];
                       index as columnIndex
@@ -234,7 +253,7 @@
                     <mat-option
                       [value]="
                         column[
-                          targetColumnCriteriaFields.controls[
+                        targetColumnAdditionalCriteriaFields.controls[
                             targetCriteriaIndex
                           ].value['targetColumnCriteria']
                         ]
@@ -242,7 +261,7 @@
                     >
                       {{
                         column[
-                          targetColumnCriteriaFields.controls[
+                        targetColumnAdditionalCriteriaFields.controls[
                             targetCriteriaIndex
                           ].value['targetColumnCriteria']
                         ]
@@ -255,7 +274,6 @@
           </div>
 
           <button
-            *ngIf="targetCriteriaIndex > 0"
             mat-icon-button
             type="button"
             class="absolute top-0 -right-[26px]"

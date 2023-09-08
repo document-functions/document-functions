@@ -36,12 +36,8 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
     targetTableIndex: [null, Validators.required],
     targetSheet: [null, Validators.required],
     targetSumColumn: [null, Validators.required],
-    targetColumnCriteria: this.fb.array([
-      this.fb.group({
-        targetColumnCriteria: [null, Validators.required],
-        targetColumnCustomCriteria: null,
-      }),
-    ]),
+    targetColumnCriteria: [null, Validators.required],    
+    targetColumnAdditionalCriteria: this.fb.array([]),
   });
   get tableIndexField() {
     return this.sumColumnCriteriaForm.get('tableIndex') as FormControl<any>;
@@ -82,8 +78,8 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
       string | null
     >;
   }
-  get targetColumnCriteriaFields() {
-    return this.sumColumnCriteriaForm.get('targetColumnCriteria') as any;
+  get targetColumnAdditionalCriteriaFields() {
+    return this.sumColumnCriteriaForm.get('targetColumnAdditionalCriteria') as any;
   }
 
   ngOnInit(): void {
@@ -92,13 +88,13 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
       .select(selectColumnSumCriteria)
       .pipe(
         tap((row) => {
-          const { targetColumnCriteria } = row;
+          const { targetColumnAdditionalCriteria } = row;
 
           this.sumColumnCriteriaForm.patchValue(row as any);
 
-          if (targetColumnCriteria?.length) {
-            this.targetColumnCriteriaFields.clear();
-            targetColumnCriteria.forEach(
+          if (targetColumnAdditionalCriteria?.length) {
+            this.targetColumnAdditionalCriteriaFields.clear();
+            targetColumnAdditionalCriteria.forEach(
               (criteria: ColumnSumTargetColumnCriteria) => {
                 this.addTargetCriteria(criteria);
               }
@@ -153,22 +149,22 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
   addTargetCriteria(customCriteria?: ColumnSumTargetColumnCriteria) {
     const criteriaForm = this.fb.group({
       targetColumnCriteria: ['', Validators.required],
-      targetColumnCustomCriteria: '',
+      targetColumnCustomCriteria: ['', Validators.required],
     });
 
     if (customCriteria) {
       criteriaForm.patchValue(customCriteria);
     }
 
-    this.targetColumnCriteriaFields.push(criteriaForm);
+    this.targetColumnAdditionalCriteriaFields.push(criteriaForm);
   }
 
   deleteTargetCriteria(index: number) {
-    this.targetColumnCriteriaFields.removeAt(index);
+    this.targetColumnAdditionalCriteriaFields.removeAt(index);
   }
 
   private resetTargetCriteria() {
-    this.targetColumnCriteriaFields.clear();
+    this.targetColumnAdditionalCriteriaFields.clear();
     this.addTargetCriteria();
   }
 }

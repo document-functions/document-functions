@@ -168,7 +168,6 @@ export const appReducer = createReducer(
 
       footer[resultColumn] = 0;
       currentTable.forEach((row: any) => {
-        let index = 0;
         row[resultColumn] = 0;
 
         for (const key in row) {
@@ -182,7 +181,6 @@ export const appReducer = createReducer(
             row[resultColumn]++;
             footer[resultColumn]++;
           }
-          index++;
         }
       });
 
@@ -212,11 +210,52 @@ export const appReducer = createReducer(
     AppPageActions.calculateColumnSumCriteria,
     (state, { columnSumCriteria }): AppState => {
       const currentTables = structuredClone([...state.tables]);
-      console.log(columnSumCriteria);
+      const {
+        tableIndex,
+        sheet,
+        columnCriteria,
+        resultColumn,
+        saveInTableColumn,
+        addColAfterColIndex,
+
+        targetTableIndex,
+        targetSheet,
+        targetColumnCriteria,
+        targetSumColumn,
+      } = columnSumCriteria;
+      const currentTable = currentTables[tableIndex].fileData[sheet];
+      const targetTable = currentTables[targetTableIndex].fileData[targetSheet];
+      let footer = currentTables[tableIndex].fileFooters[sheet];
+
+      footer[resultColumn] = 0;
+      currentTable.forEach((currentRow: any) => {
+        for (const currentKey in currentRow) {
+          if (currentKey === columnCriteria) {
+            targetTable.forEach((targetRow: any) => {
+              for (const targetKey in targetRow) {
+                if (
+                  currentRow[currentKey] &&
+                  targetRow[targetKey] &&
+                  currentRow[currentKey]
+                    .toString()
+                    .replace(/^0+/, '')
+                    .trim() ===
+                    targetRow[targetKey].toString().replace(/^0+/, '').trim()
+                ) {
+                  //
+                  console.log(
+                    currentRow[currentKey] + '/' + targetRow[targetKey]
+                  );
+                }
+              }
+            });
+          }
+        }
+      });
 
       return {
         ...state,
-        tables: currentTables,
+        // tables: currentTables,
         isRuleLoading: false,
       };
     }

@@ -10,6 +10,7 @@ export interface ColumnSumCriteria {
 
   targetTableIndex: number;
   targetSheet: string;
-  targetColumnCriteria: ColumnSumTargetColumnCriteria[];
+  targetColumnCriteria: string;
+  targetColumnAdditionalCriteria: ColumnSumTargetColumnCriteria[];
   targetSumColumn: string;
 }
