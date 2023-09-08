@@ -219,7 +219,7 @@
               <mat-label>Custom criteria column</mat-label>
               <mat-select formControlName="targetColumnCustomCriteria">
                 <ng-container *ngIf="targetSheetField.value !== null">
-                  <mat-option [value]="null">---</mat-option>
+                  <mat-option [value]="''">---</mat-option>
                   <ng-container
                     *ngFor="
                       let column of tables[targetTableIndexField.value]
