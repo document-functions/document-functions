@@ -74,19 +74,19 @@ export const appReducer = createReducer(
 
     return {
       ...state,
-      tables: currentTables,
-      sideNavPanelContent,
       rowCountCriteria: {} as RowCountCriteria,
       columnSumCriteria: {} as ColumnSumCriteria,
+      tables: currentTables,
+      sideNavPanelContent,
     };
   }),
   on(AppPageActions.deleteAllTables, (state): AppState => {
     return {
       ...state,
-      tables: [],
-      sideNavPanelContent: null,
       rowCountCriteria: {} as RowCountCriteria,
       columnSumCriteria: {} as ColumnSumCriteria,
+      tables: [],
+      sideNavPanelContent: null,
     };
   }),
   on(
@@ -104,9 +104,9 @@ export const appReducer = createReducer(
 
       return {
         ...state,
-        tables: currentTables,
         rowCountCriteria: {} as RowCountCriteria,
         columnSumCriteria: {} as ColumnSumCriteria,
+        tables: currentTables,
       };
     }
   ),
