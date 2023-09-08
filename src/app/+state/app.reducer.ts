@@ -5,6 +5,7 @@ import { SideNavPanelContents } from '../enums/side-nav-panel-contents';
 import { RowCountCriteria } from '../models/row-count-criteria';
 import { TableOperationsAction } from '../models/table-operations-action';
 import { ColumnSumCriteria } from '../models/column-sum-criteria';
+import { ColumnSumTargetColumnCriteria } from '../models/column-sum-target-column-criteria';
 
 export interface AppState {
   tables: XlsxData[];
@@ -235,7 +236,27 @@ export const appReducer = createReducer(
       let currentFooter = currentTables[tableIndex].fileFooters[sheet];
       const currentColumns = currentTables[tableIndex].fileColumns[sheet];
 
-      const targetTable = currentTables[targetTableIndex].fileData[targetSheet];
+      let targetTable = currentTables[targetTableIndex].fileData[targetSheet];
+
+      if (targetColumnAdditionalCriteria?.length) {
+        targetTable = targetTable.filter((row: any) => {
+          let matchesAllCriteria = true;
+
+          for (const criteriaItem of targetColumnAdditionalCriteria) {
+            const { targetColumnCriteria, targetColumnCustomCriteria } =
+              criteriaItem;
+
+            if (row[targetColumnCriteria] !== targetColumnCustomCriteria) {
+              matchesAllCriteria = false;
+              break;
+            }
+          }
+
+          return matchesAllCriteria;
+        });
+      }
+
+      console.log(targetTable);
 
       if (!saveInTableColumn) {
         currentColumns.push(resultColumn);
@@ -250,7 +271,6 @@ export const appReducer = createReducer(
             targetTable.forEach((targetRow: any) => {
               for (const targetKey in targetRow) {
                 if (
-                  !targetColumnAdditionalCriteria?.length &&
                   targetKey === targetColumnCriteria &&
                   currentRow[currentKey] &&
                   targetRow[targetKey] &&
@@ -266,8 +286,10 @@ export const appReducer = createReducer(
                         (currentRow[resultColumn] || 0) +
                         parseFloat(targetRow[targetSumColumn]);
 
-                      currentFooter[resultColumn] =
-                        currentFooter[resultColumn] + currentRow[resultColumn];
+                      currentFooter[resultColumn] += currentRow[resultColumn];
+
+                      console.log(targetTable);
+                      
                     }
                   }
                 }
