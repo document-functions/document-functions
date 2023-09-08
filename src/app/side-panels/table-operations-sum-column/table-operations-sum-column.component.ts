@@ -67,6 +67,11 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
       string | null
     >;
   }
+  private get addColAfterColIndexField() {
+    return this.sumColumnCriteriaForm.get('addColAfterColIndex') as FormControl<
+      string | null
+    >;
+  }
 
   get targetTableIndexField() {
     return this.sumColumnCriteriaForm.get(
@@ -169,6 +174,7 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
   toggleSaveColumn() {
     this.saveInTableColumnField.setValue(!this.saveInTableColumnField.value);
     this.resultColumnField.reset();
+    this.addColAfterColIndexField.reset();
   }
 
   addTargetCriteria(customCriteria?: ColumnSumTargetColumnCriteria) {

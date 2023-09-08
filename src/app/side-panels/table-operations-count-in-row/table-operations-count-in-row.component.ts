@@ -68,6 +68,11 @@ export class TableOperationsCountInRowComponent implements OnInit, OnDestroy {
       string | null
     >;
   }
+  private get addColAfterColIndexField() {
+    return this.rowCountCriteriaForm.get('addColAfterColIndex') as FormControl<
+      string | null
+    >;
+  }
 
   constructor(
     private fb: FormBuilder,
@@ -136,6 +141,7 @@ export class TableOperationsCountInRowComponent implements OnInit, OnDestroy {
   toggleSaveColumn() {
     this.saveInTableColumnField.setValue(!this.saveInTableColumnField.value);
     this.resultColumnField.reset();
+    this.addColAfterColIndexField.reset();
   }
 
   addCriteria(event: MatChipInputEvent) {
