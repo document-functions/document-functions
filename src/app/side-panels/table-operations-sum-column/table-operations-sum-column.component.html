@@ -11,7 +11,7 @@
           <mat-option
             *ngFor="let table of tables; index as tableIndex"
             [value]="tableIndex"
-            (click)="resetRelatedFields()"
+            (click)="onChangeTable()"
           >
             {{ table.fileName }}
           </mat-option>
@@ -25,6 +25,7 @@
             <mat-option
               *ngFor="let sheet of tables[tableIndexField.value].fileSheets"
               [value]="sheet"
+              (click)="onChangeSheet()"
             >
               {{ sheet }}
             </mat-option>
@@ -132,7 +133,7 @@
           <mat-option
             *ngFor="let table of tables; index as tableIndex"
             [value]="tableIndex"
-            (click)="resetTargetRelatedFields()"
+            (click)="onChangeTargetTable()"
           >
             {{ table.fileName }}
           </mat-option>
@@ -148,6 +149,7 @@
                 let sheet of tables[targetTableIndexField.value].fileSheets
               "
               [value]="sheet"
+              (click)="onChangeTargetSheet()"
             >
               {{ sheet }}
             </mat-option>
@@ -196,7 +198,7 @@
       </mat-form-field>
     </div>
 
-    <div class="flex items-center mb-2.5">
+    <div class="flex items-center mb-2">
       <div class="me-2 text-dove">Additional criteria</div>
       <button
         mat-icon-button
@@ -236,9 +238,14 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-              <mat-label>Custom criteria column</mat-label>
+              <mat-label> Custom criteria column </mat-label>
               <mat-select formControlName="targetColumnCustomCriteria">
-                <ng-container *ngIf="targetSheetField.value !== null">
+                <ng-container
+                  *ngIf="
+                    targetSheetField.value !== null &&
+                    targetCriteriaForm.get('targetColumnCriteria').value
+                  "
+                >
                   <ng-container
                     *ngFor="
                       let column of tables[targetTableIndexField.value]
@@ -253,7 +260,7 @@
                     <mat-option
                       [value]="
                         column[
-                        targetColumnAdditionalCriteriaFields.controls[
+                          targetColumnAdditionalCriteriaFields.controls[
                             targetCriteriaIndex
                           ].value['targetColumnCriteria']
                         ]
@@ -261,7 +268,7 @@
                     >
                       {{
                         column[
-                        targetColumnAdditionalCriteriaFields.controls[
+                          targetColumnAdditionalCriteriaFields.controls[
                             targetCriteriaIndex
                           ].value['targetColumnCriteria']
                         ]

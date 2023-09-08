@@ -51,13 +51,6 @@ export const appReducer = createReducer(
       };
     }
   ),
-  on(AppPageActions.deleteAllTables, (state): AppState => {
-    return {
-      ...state,
-      tables: [],
-      sideNavPanelContent: null,
-    };
-  }),
   on(
     AppPageActions.setTableOperationsAction,
     (state, { action, isExpanded }): AppState => {
@@ -83,8 +76,40 @@ export const appReducer = createReducer(
       ...state,
       tables: currentTables,
       sideNavPanelContent,
+      rowCountCriteria: {} as RowCountCriteria,
+      columnSumCriteria: {} as ColumnSumCriteria,
     };
   }),
+  on(AppPageActions.deleteAllTables, (state): AppState => {
+    return {
+      ...state,
+      tables: [],
+      sideNavPanelContent: null,
+      rowCountCriteria: {} as RowCountCriteria,
+      columnSumCriteria: {} as ColumnSumCriteria,
+    };
+  }),
+  on(
+    AppPageActions.deleteSheet,
+    (state, { tableIndex, sheetIndex, sheetName }): AppState => {
+      const currentTables = structuredClone([...state.tables]);
+      const currentTable = currentTables[tableIndex];
+
+      currentTable.fileSheets.splice(sheetIndex, 1);
+      delete currentTable.fileData[sheetName];
+      delete currentTable.fileFooters[sheetName];
+      if (currentTable.fileColumns[sheetName]) {
+        delete currentTable.fileColumns[sheetName];
+      }
+
+      return {
+        ...state,
+        tables: currentTables,
+        rowCountCriteria: {} as RowCountCriteria,
+        columnSumCriteria: {} as ColumnSumCriteria,
+      };
+    }
+  ),
   on(
     AppPageActions.setRowCountCriteria,
     (state, { rowCountCriteria }): AppState => {
@@ -121,25 +146,6 @@ export const appReducer = createReducer(
       isRuleLoading: true,
     };
   }),
-  on(
-    AppPageActions.deleteSheet,
-    (state, { tableIndex, sheetIndex, sheetName }): AppState => {
-      const currentTables = structuredClone([...state.tables]);
-      const currentTable = currentTables[tableIndex];
-
-      currentTable.fileSheets.splice(sheetIndex, 1);
-      delete currentTable.fileData[sheetName];
-      delete currentTable.fileFooters[sheetName];
-      if (currentTable.fileColumns[sheetName]) {
-        delete currentTable.fileColumns[sheetName];
-      }
-
-      return {
-        ...state,
-        tables: currentTables,
-      };
-    }
-  ),
   on(
     AppPageActions.calculateRowCountCriteria,
     (state, { rowCountCriteria }): AppState => {

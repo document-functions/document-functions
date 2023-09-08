@@ -11,7 +11,7 @@
           <mat-option
             *ngFor="let table of tables; index as tableIndex"
             [value]="tableIndex"
-            (click)="resetRelatedFields()"
+            (click)="onChangeTable()"
           >
             {{ table.fileName }}
           </mat-option>
@@ -25,6 +25,7 @@
             <mat-option
               *ngFor="let sheet of tables[tableIndexField.value].fileSheets"
               [value]="sheet"
+              (click)="onChangeSheet()"
             >
               {{ sheet }}
             </mat-option>

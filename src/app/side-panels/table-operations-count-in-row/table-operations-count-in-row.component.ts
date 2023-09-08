@@ -120,8 +120,14 @@ export class TableOperationsCountInRowComponent implements OnInit, OnDestroy {
     this.store.dispatch(AppPageActions.clearRowCountCriteria());
   }
 
-  resetRelatedFields() {
+  onChangeTable() {
     this.sheetField.reset();
+    this.resultColumnField.reset();
+    this.fromColumnIndexField.reset();
+    this.toColumnIndexField.reset();
+  }
+
+  onChangeSheet() {
     this.resultColumnField.reset();
     this.fromColumnIndexField.reset();
     this.toColumnIndexField.reset();

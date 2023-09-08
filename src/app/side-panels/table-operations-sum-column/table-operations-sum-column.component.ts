@@ -4,7 +4,12 @@ import {
   OnDestroy,
   OnInit,
 } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  Validators,
+} from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable, tap } from 'rxjs';
 import { selectColumnSumCriteria, selectTables } from 'src/app/+state';
@@ -36,7 +41,7 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
     targetTableIndex: [null, Validators.required],
     targetSheet: [null, Validators.required],
     targetSumColumn: [null, Validators.required],
-    targetColumnCriteria: [null, Validators.required],    
+    targetColumnCriteria: [null, Validators.required],
     targetColumnAdditionalCriteria: this.fb.array([]),
   });
   get tableIndexField() {
@@ -73,13 +78,20 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
       string | null
     >;
   }
+  get targetColumnCriteriaField() {
+    return this.sumColumnCriteriaForm.get(
+      'targetColumnCriteria'
+    ) as FormControl<string | null>;
+  }
   private get targetSumColumnField() {
     return this.sumColumnCriteriaForm.get('targetSumColumn') as FormControl<
       string | null
     >;
   }
   get targetColumnAdditionalCriteriaFields() {
-    return this.sumColumnCriteriaForm.get('targetColumnAdditionalCriteria') as any;
+    return this.sumColumnCriteriaForm.get(
+      'targetColumnAdditionalCriteria'
+    ) as any;
   }
 
   ngOnInit(): void {
@@ -124,21 +136,34 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
 
   resetForm() {
     this.sumColumnCriteriaForm.reset({ saveInTableColumn: true });
-    this.resetTargetCriteria();
+    this.targetColumnAdditionalCriteriaFields.clear();
 
     this.store.dispatch(AppPageActions.clearColumnSumCriteria());
   }
 
-  resetRelatedFields() {
+  onChangeTable() {
     this.sheetField.reset();
     this.columnCriteriaField.reset();
     this.resultColumnField.reset();
   }
 
-  resetTargetRelatedFields() {
+  onChangeSheet() {
+    this.resultColumnField.reset();
+    this.columnCriteriaField.reset();
+    this.resultColumnField.reset();
+  }
+
+  onChangeTargetTable() {
     this.targetSheetField.reset();
     this.targetSumColumnField.reset();
-    this.resetTargetCriteria();
+    this.targetColumnCriteriaField.reset();
+    this.resetTargetAdditionalCriteria();
+  }
+
+  onChangeTargetSheet() {
+    this.targetSumColumnField.reset();
+    this.targetColumnCriteriaField.reset();
+    this.resetTargetAdditionalCriteria();
   }
 
   toggleSaveColumn() {
@@ -163,8 +188,11 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
     this.targetColumnAdditionalCriteriaFields.removeAt(index);
   }
 
-  private resetTargetCriteria() {
-    this.targetColumnAdditionalCriteriaFields.clear();
-    this.addTargetCriteria();
+  private resetTargetAdditionalCriteria() {
+    this.targetColumnAdditionalCriteriaFields.controls.forEach(
+      (control: AbstractControl) => {
+        control.reset();
+      }
+    );
   }
 }
