@@ -17,6 +17,7 @@ function localStorageSyncReducer(
           'activeTableIndex',
           'sideNavPanelContent',
           'rowCountCriteria',
+          'columnSumCriteria',
           'tableOPerationsAction',
         ],
       },

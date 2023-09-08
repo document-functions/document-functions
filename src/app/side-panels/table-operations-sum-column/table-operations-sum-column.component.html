@@ -116,15 +116,16 @@
       type="button"
       matTooltip="Switch between table columns or add a column"
       class="mt-1"
+      color="primary"
       (click)="toggleSaveColumn()"
     >
-      <mat-icon color="primary">autorenew</mat-icon>
+      <mat-icon>autorenew</mat-icon>
     </button>
 
     <mat-divider class="my-4"></mat-divider>
 
     <div class="mb-2 text-dove">Target table</div>
-    <div class="grid grid-cols-2 gap-4">
+    <div class="grid grid-cols-2 gap-4 mb-4">
       <mat-form-field appearance="outline">
         <mat-label>Table</mat-label>
         <mat-select formControlName="targetTableIndex">
@@ -143,7 +144,9 @@
         <mat-select formControlName="targetSheet">
           <ng-container *ngIf="targetTableIndexField.value !== null">
             <mat-option
-              *ngFor="let sheet of tables[targetTableIndexField.value].fileSheets"
+              *ngFor="
+                let sheet of tables[targetTableIndexField.value].fileSheets
+              "
               [value]="sheet"
             >
               {{ sheet }}
@@ -151,9 +154,121 @@
           </ng-container>
         </mat-select>
       </mat-form-field>
+
+      <mat-form-field class="col-span-2" appearance="outline">
+        <mat-label>Sum column</mat-label>
+        <mat-select formControlName="targetSumColumn">
+          <ng-container *ngIf="targetSheetField.value !== null">
+            <ng-container
+              *ngFor="
+                let column of tables[targetTableIndexField.value].fileColumns[
+                  targetSheetField.value
+                ];
+                index as columnIndex
+              "
+            >
+              <mat-option *ngIf="columnIndex > 0" [value]="column">
+                {{ column }}
+              </mat-option>
+            </ng-container>
+          </ng-container>
+        </mat-select>
+      </mat-form-field>
     </div>
 
-    <div class="flex justify-end mt-3">
+    <div class="flex items-center mb-2.5">
+      <div class="me-2 text-dove">Criteria</div>
+      <button
+        mat-icon-button
+        type="button"
+        color="primary"
+        (click)="addTargetCriteria()"
+      >
+        <mat-icon class="text-xl">add_circle_outline</mat-icon>
+      </button>
+    </div>
+    <ng-container formArrayName="targetColumnCriteria">
+      <ng-container
+        *ngFor="
+          let targetCriteriaForm of targetColumnCriteriaFields.controls;
+          index as targetCriteriaIndex
+        "
+      >
+        <div [formGroup]="targetCriteriaForm" class="mb-4 relative">
+          <div class="grid grid-cols-2 gap-4">
+            <mat-form-field appearance="outline">
+              <mat-label>Criteria column</mat-label>
+              <mat-select formControlName="targetColumnCriteria">
+                <ng-container *ngIf="targetSheetField.value !== null">
+                  <ng-container
+                    *ngFor="
+                      let column of tables[targetTableIndexField.value]
+                        .fileColumns[targetSheetField.value];
+                      index as columnIndex
+                    "
+                  >
+                    <mat-option *ngIf="columnIndex > 0" [value]="column">
+                      {{ column }}
+                    </mat-option>
+                  </ng-container>
+                </ng-container>
+              </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Custom criteria column</mat-label>
+              <mat-select formControlName="targetColumnCustomCriteria">
+                <ng-container *ngIf="targetSheetField.value !== null">
+                  <mat-option [value]="null">---</mat-option>
+                  <ng-container
+                    *ngFor="
+                      let column of tables[targetTableIndexField.value]
+                        .fileData[targetSheetField.value]
+                        | unique
+                          : targetColumnCriteriaFields.controls[
+                              targetCriteriaIndex
+                            ].value['targetColumnCriteria'];
+                      index as columnIndex
+                    "
+                  >
+                    <mat-option
+                      [value]="
+                        column[
+                          targetColumnCriteriaFields.controls[
+                            targetCriteriaIndex
+                          ].value['targetColumnCriteria']
+                        ]
+                      "
+                    >
+                      {{
+                        column[
+                          targetColumnCriteriaFields.controls[
+                            targetCriteriaIndex
+                          ].value['targetColumnCriteria']
+                        ]
+                      }}
+                    </mat-option>
+                  </ng-container>
+                </ng-container>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <button
+            *ngIf="targetCriteriaIndex > 0"
+            mat-icon-button
+            type="button"
+            class="absolute top-0 -right-[26px]"
+            color="warn"
+            (click)="deleteTargetCriteria(targetCriteriaIndex)"
+          >
+            <mat-icon class="text-xl">close</mat-icon>
+          </button>
+        </div>
+      </ng-container>
+    </ng-container>
+
+    <div class="flex justify-end">
       <button
         type="submit"
         color="primary"

@@ -1,4 +1,4 @@
 export interface ColumnSumTargetColumnCriteria {
-  targetColumn: string;
-  targetColumnAdditionalCriteria: string;
+  targetColumnCriteria: string;
+  targetColumnCustomCriteria: string;
 }

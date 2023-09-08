@@ -1,5 +1,9 @@
 <ng-container *ngIf="getTables$ | async as tables">
-  <form class="mt-2" *ngIf="getRowCountCriteria$ | async" [formGroup]="rowCountCriteriaForm">
+  <form
+    class="mt-2"
+    *ngIf="getRowCountCriteria$ | async"
+    [formGroup]="rowCountCriteriaForm"
+  >
     <div class="grid grid-cols-2 gap-4">
       <mat-form-field appearance="outline">
         <mat-label>Table</mat-label>
@@ -158,13 +162,14 @@
       mat-icon-button
       type="button"
       matTooltip="Switch between table columns or add a column"
-      class="mt-1"
+      class="mt-1 mb-4"
+      color="primary"
       (click)="toggleSaveColumn()"
     >
-      <mat-icon color="primary">autorenew</mat-icon>
+      <mat-icon>autorenew</mat-icon>
     </button>
 
-    <div class="flex justify-end mt-3">
+    <div class="flex justify-end">
       <button
         type="submit"
         color="primary"

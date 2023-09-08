@@ -208,13 +208,17 @@ export const appReducer = createReducer(
       };
     }
   ),
-  on(AppPageActions.calculateColumnSumCriteria, (state): AppState => {
-    const currentTables = structuredClone([...state.tables]);
+  on(
+    AppPageActions.calculateColumnSumCriteria,
+    (state, { columnSumCriteria }): AppState => {
+      const currentTables = structuredClone([...state.tables]);
+      console.log(columnSumCriteria);
 
-    return {
-      ...state,
-      tables: currentTables,
-      isRuleLoading: false,
-    };
-  })
+      return {
+        ...state,
+        tables: currentTables,
+        isRuleLoading: false,
+      };
+    }
+  )
 );

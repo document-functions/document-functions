@@ -6,6 +6,7 @@ import { TableOperationsDeleteDocumentsComponent } from './table-operations-dele
 import { TableOperationsCountInRowComponent } from './table-operations-count-in-row/table-operations-count-in-row.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { TableOperationsSumColumnComponent } from './table-operations-sum-column/table-operations-sum-column.component';
+import { UniquePipe } from '../pipes/unicue.pipe';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { TableOperationsSumColumnComponent } from './table-operations-sum-column
     TableOperationsDeleteDocumentsComponent,
     TableOperationsCountInRowComponent,
     TableOperationsSumColumnComponent,
+    UniquePipe,
   ],
   imports: [CommonModule, AngularMaterialModule, ReactiveFormsModule],
   exports: [TableOperationsLayoutComponent],

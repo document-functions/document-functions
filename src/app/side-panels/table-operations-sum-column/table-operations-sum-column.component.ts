@@ -1,16 +1,23 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable, tap } from 'rxjs';
 import { selectColumnSumCriteria, selectTables } from 'src/app/+state';
 import { AppPageActions } from 'src/app/+state/actions';
 import { ColumnSumCriteria } from 'src/app/models/column-sum-criteria';
+import { ColumnSumTargetColumnCriteria } from 'src/app/models/column-sum-target-column-criteria';
 import { XlsxData } from 'src/app/models/xlsx-data';
 
 @Component({
   selector: 'app-table-operations-sum-column',
   templateUrl: './table-operations-sum-column.component.html',
   styleUrls: ['./table-operations-sum-column.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
   getTables$ = new Observable<XlsxData[]>();
@@ -28,14 +35,24 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
 
     targetTableIndex: [null, Validators.required],
     targetSheet: [null, Validators.required],
-    targetColumnCriteria: this.fb.array([], Validators.required),
     targetSumColumn: [null, Validators.required],
+    targetColumnCriteria: this.fb.array([
+      this.fb.group({
+        targetColumnCriteria: [null, Validators.required],
+        targetColumnCustomCriteria: null,
+      }),
+    ]),
   });
   get tableIndexField() {
     return this.sumColumnCriteriaForm.get('tableIndex') as FormControl<any>;
   }
   get sheetField() {
     return this.sumColumnCriteriaForm.get('sheet') as FormControl<
+      string | null
+    >;
+  }
+  get columnCriteriaField() {
+    return this.sumColumnCriteriaForm.get('columnCriteria') as FormControl<
       string | null
     >;
   }
@@ -60,6 +77,14 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
       string | null
     >;
   }
+  private get targetSumColumnField() {
+    return this.sumColumnCriteriaForm.get('targetSumColumn') as FormControl<
+      string | null
+    >;
+  }
+  get targetColumnCriteriaFields() {
+    return this.sumColumnCriteriaForm.get('targetColumnCriteria') as any;
+  }
 
   ngOnInit(): void {
     this.getTables$ = this.store.select(selectTables);
@@ -72,11 +97,12 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
           this.sumColumnCriteriaForm.patchValue(row as any);
 
           if (targetColumnCriteria?.length) {
-            // TODO
-            // this.criteriaFields.clear();
-            // criteria.forEach((crit: string) => {
-            //   this.criteriaFields.push(this.fb.control(crit));
-            // });
+            this.targetColumnCriteriaFields.clear();
+            targetColumnCriteria.forEach(
+              (criteria: ColumnSumTargetColumnCriteria) => {
+                this.addTargetCriteria(criteria);
+              }
+            );
           }
         })
       );
@@ -102,24 +128,48 @@ export class TableOperationsSumColumnComponent implements OnInit, OnDestroy {
 
   resetForm() {
     this.sumColumnCriteriaForm.reset({ saveInTableColumn: true });
-    // TODO
-    // this.criteriaFields.value.forEach(() => {
-    //   this.removeCriteria(0);
-    // });
+    this.resetTargetCriteria();
 
     this.store.dispatch(AppPageActions.clearColumnSumCriteria());
   }
 
   resetRelatedFields() {
-    // TODO
+    this.sheetField.reset();
+    this.columnCriteriaField.reset();
+    this.resultColumnField.reset();
   }
 
   resetTargetRelatedFields() {
-    // TODO
+    this.targetSheetField.reset();
+    this.targetSumColumnField.reset();
+    this.resetTargetCriteria();
   }
 
   toggleSaveColumn() {
     this.saveInTableColumnField.setValue(!this.saveInTableColumnField.value);
     this.resultColumnField.reset();
+  }
+
+  addTargetCriteria(customCriteria?: ColumnSumTargetColumnCriteria) {
+    const criteria = this.fb.group({
+      targetColumnCriteria: [
+        customCriteria ? customCriteria.targetColumnCriteria : null,
+        Validators.required,
+      ],
+      targetColumnCustomCriteria: customCriteria
+        ? customCriteria.targetColumnCustomCriteria
+        : null,
+    });
+
+    this.targetColumnCriteriaFields.push(criteria);
+  }
+
+  deleteTargetCriteria(index: number) {
+    this.targetColumnCriteriaFields.removeAt(index);
+  }
+
+  private resetTargetCriteria() {
+    this.targetColumnCriteriaFields.clear();
+    this.addTargetCriteria();
   }
 }
