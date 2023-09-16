@@ -5,12 +5,12 @@
   th,
   tfoot,
   tr td:first-child {
-    white-space: nowrap;
     background-color: theme('colors.mercury');
   }
   th,
   tr,
   td {
+    white-space: nowrap;
     border: 1px solid theme('colors.gravity');
   }
 }

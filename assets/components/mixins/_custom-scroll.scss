@@ -1,4 +1,4 @@
-@mixin custom-scroll($color, $direction) {
+@mixin custom-scroll($color, $direction, $size: 6px) {
   @if $direction==vertical {
     overflow-y: auto;
     overflow-x: hidden;
@@ -26,11 +26,11 @@
     }
   }
   &::-webkit-scrollbar:vertical {
-    width: 8px;
+    width: $size;
   }
 
   &::-webkit-scrollbar:horizontal {
-    height: 8px;
+    height: $size;
   }
 
   &::-webkit-scrollbar-thumb {

@@ -1,0 +1,18 @@
+.mdc-button--outlined,
+.mdc-button--unelevated {
+  height: 30px !important;
+  font-size: 12px;
+}
+
+.mat-mdc-icon-button {
+  width: 28px !important;
+  height: 28px !important;
+  padding: 0 !important;
+  mat-icon {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
